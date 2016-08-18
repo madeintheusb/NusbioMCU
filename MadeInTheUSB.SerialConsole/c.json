@@ -1,0 +1,66 @@
+{
+  "PortName": "COM4",
+  "DeviceName": null,
+  "ComCommands": [
+    {
+      "Caption": "H)elp",
+      "Command": null,
+      "CommandType": 0,
+      "ConsoleKey": 72
+    },
+    {
+      "Caption": "Q)uit",
+      "Command": null,
+      "CommandType": 1,
+      "ConsoleKey": 81
+    },
+    {
+      "Caption": "P)ause",
+      "Command": null,
+      "CommandType": 3,
+      "ConsoleKey": 80
+    },
+    {
+      "Caption": "A)cquire",
+      "Command": "acquireData",
+      "CommandType": 2,
+      "ConsoleKey": 65
+    },
+    {
+      "Caption": "R)eset",
+      "Command": "resetData",
+      "CommandType": 2,
+      "ConsoleKey": 82
+    },
+    {
+      "Caption": "G)et Data",
+      "Command": "getData",
+      "CommandType": 2,
+      "ConsoleKey": 71
+    },
+    {
+      "Caption": "+",
+      "Command": "getData",
+      "CommandType": 2,
+      "ConsoleKey": 107
+    },
+    {
+      "Caption": "-",
+      "Command": "getData",
+      "CommandType": 2,
+      "ConsoleKey": 109
+    },
+    {
+      "Caption": "-",
+      "Command": "right",
+      "CommandType": 2,
+      "ConsoleKey": 39
+    },
+    {
+      "Caption": "-",
+      "Command": "left",
+      "CommandType": 2,
+      "ConsoleKey": 37
+    }
+  ]
+}

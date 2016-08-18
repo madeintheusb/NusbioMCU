@@ -1,0 +1,10 @@
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\NusbioMatrix.Console.exe.config
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\NusbioMatrix.Console.exe
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\NusbioMatrix.Console.pdb
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\MadeInTheUSB.MCU.Lib.dll
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\Newtonsoft.Json.dll
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\MadeInTheUSB.MCU.Lib.pdb
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\bin\Debug\Newtonsoft.Json.xml
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\obj\Debug\NusbioPixel.Console.csprojResolveAssemblyReference.cache
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\obj\Debug\NusbioMatrix.Console.exe
+D:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU\NusbioMatrixMCU.net\NusbioPixelConsole\obj\Debug\NusbioMatrix.Console.pdb

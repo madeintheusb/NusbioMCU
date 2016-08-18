@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AA0ED0B9-69AE-43FC-84F3-C69D2D9D8477}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MadeInTheUSB.MCU.Lib</RootNamespace>
+    <AssemblyName>MadeInTheUSB.MCU.Lib</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\Device\Adafruit\Adafruit_GFX.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioEEPROM.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioPixel.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.GFX.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\Nusbio_GFX.cs" />
+    <Compile Include="Source\Device\NusbioMCU\Analog\AnalogLightSensor.cs" />
+    <Compile Include="Source\Device\NusbioMCU\Analog\AnalogSensor.cs" />
+    <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.Enum.cs" />
+    <Compile Include="Source\Device\NotUsed\NusbioMatrix.Char.v0.cs" />
+    <Compile Include="Source\Device\NusbioMCU\NusbioMCUProtocolRecorder.cs" />
+    <Compile Include="Source\Device\Utility\NusbioLandscapeMatrix.cs" />
+    <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.cs" />
+    <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.Performance.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Scroll.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Char.cs" />
+    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.cs" />
+    <Compile Include="Source\McuCom\McuCom.cs" />
+    <Compile Include="Source\McuCom\McuComResponse.cs" />
+    <Compile Include="Source\Utils\BitUtil.cs" />
+    <Compile Include="Source\Utils\ConsoleEx.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\Utils\JsonObject.cs" />
+    <Compile Include="Source\Utils\RGBHelper.cs" />
+    <Compile Include="Source\Utils\TimeOut.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
