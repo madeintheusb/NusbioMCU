@@ -17,8 +17,7 @@ Links
     Drivers: NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link CH340 Driver
     Source Code: Nusbio MCU Source Code
 
-
-www.MadeInTheUSB.net\NusbioMatrixMCU
+http://www.MadeInTheUSB.net/NusbioMatrixMCU
 
 ## License
 
