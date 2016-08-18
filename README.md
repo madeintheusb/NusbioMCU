@@ -2,7 +2,21 @@
 
 ## Overview
 
-NusbioMatrix is a 8x8, 32x8 or 64x8 LED matrix programmable from Windows in any .NET languages.
+ NubsioMCU is a .NET programmable Micro-Controller to
+
+    Control different shape of multi-color LED (RGB) of type WS2812
+    Control 8x8 LED Matrix
+
+Facts
+
+    Every thing is plug in play
+    All .NET source is written in C# and is open-source
+
+Links
+
+    Drivers: NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link CH340 Driver
+    Source Code: Nusbio MCU Source Code
+
 
 www.MadeInTheUSB.net\NusbioMatrixMCU
 
