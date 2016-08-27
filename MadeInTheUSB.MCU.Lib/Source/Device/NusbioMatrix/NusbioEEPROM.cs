@@ -97,7 +97,8 @@ namespace MadeInTheUSB.MCU
         public McuComResponse Read(int pageCount)
         {
             this.Send(Mcu.McuCommand.CP_EEPROM_READ_PAGES, pageCount);
-            var r = ReadAnswer();
+            var r = ReadAnswer(256+3);
+            base.CleanBuffer();
             return r;
         }
 
@@ -123,7 +124,7 @@ namespace MadeInTheUSB.MCU
         {
             this.EepromInfo = new EEPROM_INFO();
             Send(Mcu.McuCommand.CP_EEPROM_GET_INFO, 0);
-            var r = ReadAnswer();
+            var r = ReadAnswer(6);
             if (r.Succeeded)
             {
                 this.EepromInfo.Succeeded    = true;

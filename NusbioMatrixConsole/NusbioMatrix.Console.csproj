@@ -53,6 +53,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MadeInTheUSB.MCU.Lib\MadeInTheUSB.MCU.Lib.csproj">
+      <Project>{aa0ed0b9-69ae-43fc-84f3-c69d2d9d8477}</Project>
+      <Name>MadeInTheUSB.MCU.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

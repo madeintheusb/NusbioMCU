@@ -77,17 +77,48 @@ namespace NusbioMatrixConsole
             }
         }
 
-
-        
         private static void ReadDemo(NusbioEEPROM nusbioEEPROM)
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, "Read Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
-            var r = nusbioEEPROM.SetAddress(129);
-            r = nusbioEEPROM.Read(1);
+            var sw = Stopwatch.StartNew();
+            
+            for(var p = 0; p<nusbioEEPROM.EepromInfo.PageCount; p++ ) {
 
+                Thread.Sleep(1);
+                var r = nusbioEEPROM.SetAddress(p);
+                Thread.Sleep(1);
+                r = nusbioEEPROM.Read(1);
+
+                if(r == null || r.Buffer == null)
+                {
+                    Console.WriteLine("FAILED");
+                }
+                else {
+                    r.Buffer.RemoveAt(0);
+                    r.Buffer.RemoveAt(0);
+                    if(r.Buffer.Count != nusbioEEPROM.EepromInfo.PageSize)
+                    {
+                        Console.WriteLine(string.Format("Failed expected:{0}, received:{1}, page:{2}", nusbioEEPROM.EepromInfo.PageSize, r.Buffer.Count, p));
+                        
+                    }
+                    else {
+                        foreach(var b in r.Buffer)
+                        {
+                            if(b != 129)
+                            {
+                                if(Debugger.IsAttached)
+                                    Debugger.Break();
+                            }
+                        }
+                        Console.WriteLine(string.Format("Page {0} ok", p));
+                    }
+                }
+            }
+            sw.Stop();
+            Console.WriteLine("ms:{0}, tick:{1}", sw.ElapsedMilliseconds, sw.ElapsedTicks);
             var k = Console.ReadKey(true);
         }
 

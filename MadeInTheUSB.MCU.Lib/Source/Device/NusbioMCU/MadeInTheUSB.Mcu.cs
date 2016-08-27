@@ -69,6 +69,11 @@ namespace MadeInTheUSB.MCU
             this.ResetBytePerSecondCounters();
         }
 
+        public void CleanBuffer()
+        {
+            _mcu.CleanBuffers();
+        }
+
         public string DetectMcuComPort(Mcu.FirmwareName expectedFirmware = Mcu.FirmwareName.NusbioMcuMatrixPixel, int reTry = 4)
         {
             int tryCounter = 0;
@@ -80,7 +85,7 @@ namespace MadeInTheUSB.MCU
                     return comPort;
                 tryCounter++;
                 Thread.Sleep(waitTime);
-                waitTime += 1000;
+                waitTime += 1250;
             }
             return null;
         }
@@ -146,10 +151,10 @@ namespace MadeInTheUSB.MCU
         /// Wait up to 100 ms for an answer from the NusbioMatrix MCU Firmware
         /// </summary>
         /// <returns></returns>
-        internal McuComResponse ReadAnswer()
+        internal McuComResponse ReadAnswer(int expectedSize = 3)
         {
             var r = new McuComResponse();
-            var buffer = this._mcu.ReadBuffer(3);
+            var buffer = this._mcu.ReadBuffer(expectedSize);
             if (buffer != null)
             {
                 this.Recorder.AddReceived(buffer.ToList());
@@ -179,9 +184,9 @@ namespace MadeInTheUSB.MCU
 
         private void SendBuffer(byte[] buffer)
         {
-            _mcu.Send(buffer);
             this.Recorder.AddSent(buffer.ToList());
             this.AddByte(buffer.Length);
+            _mcu.Send(buffer);
             //System.Diagnostics.Debug.WriteLine(BufferToCode(buffer));
         }
 

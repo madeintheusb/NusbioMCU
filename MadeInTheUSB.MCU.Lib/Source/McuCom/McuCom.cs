@@ -66,7 +66,7 @@ namespace MadeInTheUSB.Communication
     /// </summary>
     public class McuCom : McuComBaseClass, IDisposable, IMcuCom
     {
-        const int MAX_RESPONSE_BUFFER = 16;
+        const int MAX_RESPONSE_BUFFER = 256+4; // 16; FRED
 
         internal SerialPort _serialPort;
 
@@ -94,7 +94,7 @@ namespace MadeInTheUSB.Communication
             }
         }
 
-        private void CleanBuffers()
+        internal void CleanBuffers()
         {
             var r = this._serialPort.BytesToRead;
             if (r > 0)
@@ -188,17 +188,42 @@ namespace MadeInTheUSB.Communication
 
         //}
 
-        public byte[] ReadBuffer(int len)
+        public byte[] ReadBuffer(int expectedLen)
         {
+            var globalBuffer = new List<byte>();
             var sleepTime       = 1;
             var timeOutCounter  = 0;
-            while (timeOutCounter < 6)
+            var bufferCount     = 0;
+            var maxTimeOut      = 10;
+
+            if(expectedLen > 64)
+                sleepTime = 3;
+
+            Thread.Sleep(sleepTime);
+
+            while (timeOutCounter < maxTimeOut)
             {
                 Thread.Sleep(sleepTime);
                 if (this.ReceivedBuffers.Count > 0)
                 {
                     var buffer = this.ReceivedBuffers.Dequeue();
-                    return buffer.ToArray();
+                    bufferCount += 1;
+                    if(bufferCount >= 2) {
+                        // In case of buffer greater than 64 byte we combine first and second part
+                        // and return result
+                        globalBuffer.AddRange(buffer);
+                        if(globalBuffer.Count == expectedLen)
+                            return globalBuffer.ToArray();
+                    }
+                    else if(bufferCount == 1 && buffer.Count == expectedLen) {
+                        // On buffer les than 64 byte
+                        return buffer.ToArray();
+                    }
+                    else
+                    {
+                        // In case of buffer greater than 64 byte we store the first part
+                        globalBuffer.AddRange(buffer);
+                    }
                 }
                 timeOutCounter++;
                 if (sleepTime < 4)
