@@ -295,7 +295,7 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
-            var ledCountChar = ConsoleEx.Question(1, "RG LED Count 8) 1)0 3)0 6)0 S)qaure 16 R)ing 12", new List<char>() {'1', '3', '6', 'S', '8', 'R'});
+            var ledCountChar = ConsoleEx.Question(1, "RG LED Count  8)  1)0  3)0  6)0  S)quare 16  R)ing 12", new List<char>() {'1', '3', '6', 'S', '8', 'R'});
             switch (ledCountChar)
             {
                 case '1': return 10;

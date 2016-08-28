@@ -5,10 +5,3 @@ C:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU.net\MadeInTheUSB.MCU.Lib\bin\Debug\Newto
 C:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU.net\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.csprojResolveAssemblyReference.cache
 C:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU.net\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.dll
 C:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU.net\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.pdb
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\bin\Debug\MadeInTheUSB.MCU.Lib.dll
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\bin\Debug\MadeInTheUSB.MCU.Lib.pdb
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\bin\Debug\Newtonsoft.Json.dll
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\bin\Debug\Newtonsoft.Json.xml
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.csprojResolveAssemblyReference.cache
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.dll
-C:\DVT\MadeInTheUSB.MCU\NusbioMCU\MadeInTheUSB.MCU.Lib\obj\Debug\MadeInTheUSB.MCU.Lib.pdb
