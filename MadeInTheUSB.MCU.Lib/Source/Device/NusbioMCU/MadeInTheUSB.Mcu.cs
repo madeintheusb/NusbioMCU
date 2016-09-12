@@ -74,7 +74,7 @@ namespace MadeInTheUSB.MCU
             _mcu.CleanBuffers();
         }
 
-        public string DetectMcuComPort(Mcu.FirmwareName expectedFirmware = Mcu.FirmwareName.NusbioMcuMatrixPixel, int reTry = 4)
+        public string DetectMcuComPort(Mcu.FirmwareName expectedFirmware = Mcu.FirmwareName.NusbioMcuMatrixPixel, int reTry = 5)
         {
             int tryCounter = 0;
             int waitTime = 1000;

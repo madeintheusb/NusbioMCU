@@ -1,7 +1,7 @@
 {
-  "PortName": "COM3",
+  "PortName": "COM9",
   "DeviceName": "BLUE",
-  "BaudRate": 115200,
+  "BaudRate": 14400,
 
   "ComCommands": [
     {
