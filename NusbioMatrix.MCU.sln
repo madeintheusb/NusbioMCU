@@ -7,13 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioMatrix.Console", "Nus
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadeInTheUSB.MCU.Lib", "MadeInTheUSB.MCU.Lib\MadeInTheUSB.MCU.Lib.csproj", "{AA0ED0B9-69AE-43FC-84F3-C69D2D9D8477}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadeInTheUSB.SerialConsole", "MadeInTheUSB.SerialConsole\MadeInTheUSB.SerialConsole.csproj", "{51DF39A6-C253-4542-82ED-193DDE0AA90D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioEEPROMConsole", "NusbioEEPROMConsole\NusbioEEPROMConsole.csproj", "{7DC2002B-F96A-43C3-A128-952DDE720734}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioPixel.Console", "NusbioPixelConsole\NusbioPixel.Console.csproj", "{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioSensorConsole", "NusbioSensorConsole\NusbioSensorConsole.csproj", "{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,22 +23,10 @@ Global
 		{AA0ED0B9-69AE-43FC-84F3-C69D2D9D8477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA0ED0B9-69AE-43FC-84F3-C69D2D9D8477}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA0ED0B9-69AE-43FC-84F3-C69D2D9D8477}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51DF39A6-C253-4542-82ED-193DDE0AA90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51DF39A6-C253-4542-82ED-193DDE0AA90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51DF39A6-C253-4542-82ED-193DDE0AA90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51DF39A6-C253-4542-82ED-193DDE0AA90D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DC2002B-F96A-43C3-A128-952DDE720734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DC2002B-F96A-43C3-A128-952DDE720734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DC2002B-F96A-43C3-A128-952DDE720734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DC2002B-F96A-43C3-A128-952DDE720734}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
