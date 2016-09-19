@@ -1,7 +1,5 @@
 ﻿/*
-    Demo application for the NusbioMatrix MCU based.
-    Support 1, 4, 8 Matrix.
-
+    Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
     Copyright (C) 2016 MadeInTheUSB LLC
     Written by FT
     

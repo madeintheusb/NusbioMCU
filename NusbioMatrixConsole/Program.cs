@@ -1,7 +1,5 @@
 ﻿/*
-    Demo application for the NusbioMatrix MCU based.
-    Support 1, 4, 8 Matrix.
-
+    Demo application for the NusbioMCU and 1 or 4 8x8 LED Matrix.
     Copyright (C) 2016 MadeInTheUSB LLC
     Written by FT
     

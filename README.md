@@ -29,7 +29,7 @@ Copyright (C) 2015, 2016 MadeInTheUSB LLC
 
 # License 
 
-    All samples and components classes are released under the MIT License.
+    All .NET samples and components classes are released under the MIT License.
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
     associated documentation files (the "Software"), to deal in the Software without restriction, 
