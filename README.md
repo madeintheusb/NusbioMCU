@@ -9,7 +9,7 @@
 
 Facts
 
-    Every thing is plug and play
+    Everything is plug and play
     All .NET source is written in C# and is open-source
 
 Links
