@@ -14,8 +14,11 @@ Facts
 
 Links
 
-    Drivers: NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link CH340 Driver
-    Source Code: Nusbio MCU Source Code
+    Drivers:
+        Windows 10 - Auto detection 
+            See video https://www.youtube.com/watch?v=tqPd-hfGUjQ&feature=youtu.be
+        Windows 7 - NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link
+        http://madeintheusb.net/Drivers/NusbioMCU.CH341SER.CH340.Driver.zip
 
 http://www.MadeInTheUSB.net/NusbioMCU
 
