@@ -48,7 +48,8 @@ namespace MadeInTheUSB.MCU
             CP_DIGITAL_READ     = 11,
             CP_SET_PIN_MODE     = 12,
             CP_DIGITAL_WRITE    = 13,
-            
+            CP_ANALOG_WRITE     = 14,
+
             CP_RGB_PIXEL_SET_COUNT			   =20, // Follow by an int (byte 0, byte 1)
             CP_RGB_PIXEL_SET_COLOR_1BYTE_INDEX =21, // 1 byte for pixel index, r,g,b as byte. Faster is index is less than 256
             CP_RGB_PIXEL_SET_COLOR_NO_INDEX	   =22, // r,g,b as byte, inc last index position
@@ -80,11 +81,10 @@ namespace MadeInTheUSB.MCU
 
         public enum DigitalIOMode
         {
-            INPUT =0x0,
-            OUTPUT= 0x1,
-            INPUT_PULLUP =0x2
+            INPUT           = 0x0,
+            OUTPUT          = 0x1,
+            INPUT_PULLUP    = 0x2
         }
-
             
         public enum GpioPin
         {
@@ -92,6 +92,12 @@ namespace MadeInTheUSB.MCU
             Gpio5 = 5,
             Gpio6 = 6,
             Gpio7 = 7
+        };
+
+        public enum GpioPwmPin
+        {
+            Gpio5 = 5,
+            Gpio6 = 6
         };
 
         public enum AdcPin

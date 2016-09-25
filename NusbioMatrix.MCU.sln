@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadeInTheUSB.MCU.Lib", "Mad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioPixel.Console", "NusbioPixelConsole\NusbioPixel.Console.csproj", "{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioSensorConsole", "NusbioSensorConsole\NusbioSensorConsole.csproj", "{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D027E82-CB8B-4A19-8DEC-6FE68395D2A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7F8F330-EE69-4DFD-BFA6-7DE806668F3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

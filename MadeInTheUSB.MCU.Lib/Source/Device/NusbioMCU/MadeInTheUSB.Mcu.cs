@@ -259,17 +259,20 @@ namespace MadeInTheUSB.MCU
             Mcu.GpioPin.Gpio4, Mcu.GpioPin.Gpio5, Mcu.GpioPin.Gpio6, Mcu.GpioPin.Gpio7,
         };
 
+        public bool AnalogWrite(Mcu.GpioPwmPin pin, int value)
+        {
+            if (value < 0)
+                value = 0;
+            this.Send(Mcu.McuCommand.CP_ANALOG_WRITE, (int)pin, value);
+            var r = ReadAnswer();
+            return r.Succeeded && r.GetParam(0) == (int)pin && r.GetParam(1) == value;
+        }
+
         public bool DigitalWrite(Mcu.GpioPin port, bool state)
         {
             var intState = state ? 1 : 0;
             this.Send(Mcu.McuCommand.CP_DIGITAL_WRITE, (int)port, intState);
             return true;
-            //var r    = this.ReadAnswer();
-            //r.Values = new List<int>();
-            //if (r.Succeeded && r.Buffer.Count == 2) // Answer is always 2 byte
-            //    return (r.Buffer[0] == (int)port) && (r.Buffer[1] == intState);
-            //else
-            //    return false;
         }
 
         public bool SetDigitalPinMode(Mcu.GpioPin port, Mcu.DigitalIOMode mode)

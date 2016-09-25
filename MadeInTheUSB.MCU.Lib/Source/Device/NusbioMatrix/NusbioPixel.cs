@@ -45,10 +45,8 @@ namespace MadeInTheUSB.MCU
         {
             get
             {
-                if (this.Count <= 16)
-                    return 16;
-                if (this.Count < 60)
-                    return 64;                
+                if (this.Count >= 30)
+                    return 48;
                 return 64;
             }
         }

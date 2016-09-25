@@ -35,7 +35,7 @@ namespace NusbioMatrixConsole
     class Program
     {
         private const int DEFAULT_INTENSITY = 2;
-        private const int SAFE_INTENSITY    = 0;
+        private const int SAFE_INTENSITY    = 1;
 
         public static string GetAssemblyCopyright()
         {

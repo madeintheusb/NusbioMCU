@@ -59,7 +59,7 @@ namespace MadeInTheUSB.MCU
         /// Every 1 level of intensisty consume about 50 mA with a 4 8x8 matrix
         /// if all 256 LEDs are on.
         /// </summary>
-        public const int MAX7219_MAX_INTENSITY = 3; // from 0..3
+        public const int MAX7219_MAX_INTENSITY = 4; // from 0..4
         /// <summary>
         /// Minimun LED intensity allowed
         /// </summary>
