@@ -1,1 +1,0 @@
-C:\DVT\MadeInTheUSB.MCU\NusbioMatrixMCU.net\NusbioMatrixConsole\bin\Debug\NusbioMatrix.Console.exe.config
