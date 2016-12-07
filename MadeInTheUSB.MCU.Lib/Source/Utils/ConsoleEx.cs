@@ -126,6 +126,16 @@ namespace MadeInTheUSB
             Write(text, textColor, backGroundColor);
         }
 
+        public static void Wait(int second)
+        {
+            System.Threading.Thread.Sleep(second*1000);
+        }
+
+        public static void WaitMS(int milliSecond)
+        {
+            System.Threading.Thread.Sleep(milliSecond);
+        }
+
         public static void TitleBar(int y, string text, ConsoleColor textColor = ConsoleColor.Yellow, ConsoleColor backGroundColor = ConsoleColor.DarkBlue)
         {
             Gotoxy(0, y);

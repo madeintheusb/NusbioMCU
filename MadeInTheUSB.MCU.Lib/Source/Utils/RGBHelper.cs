@@ -201,7 +201,114 @@ namespace MadeInTheUSB.Components
             while (l.Count > trigoCircleStepCount) l.RemoveAt(l.Count - 1);
             return l;
         }
-        
+
+        public static bool Equal(Color s, Color d)
+        {
+            return s.R == d.R && s.G == d.G && s.B == d.B;
+        }
+
+        public static List<Color> MoveToColors(Color s, Color d, int step)
+        {
+            int maxStep = 255 / (step);
+            var rStep   = 0;
+            var gStep   = 0;
+            var bStep   = 0;
+
+            rStep = (d.R - s.R) / maxStep;
+            if (rStep == 0) rStep = d.R - s.R > 0 ? 1 : -1;
+
+            gStep = (d.G - s.G) / maxStep;
+            if (gStep == 0) gStep = d.G - s.G > 0 ? 1 : -1;
+
+            bStep = (d.B - s.B) / maxStep;
+            if (bStep == 0) bStep = d.B - s.B > 0 ? 1 : -1;
+
+            var newColor = s;
+            var l = new List<Color>();
+            for (var i = 0; i <= maxStep; i++)
+            {
+                var r = s.R + (i * rStep);
+                var g = s.G + (i * gStep);
+                var b = s.B + (i * bStep);
+
+                if (r < 0) r = 0;
+                if (g < 0) g = 0;
+                if (b < 0) b = 0;
+
+                l.Add(Color.FromArgb(r, g, b));
+            }
+
+            var rValuesOtherProgression = GetStuff(s.R, d.R, maxStep);
+            var bValuesOtherProgression = GetStuff(s.B, d.B, maxStep);
+            var gValuesOtherProgression = GetStuff(s.G, d.G, maxStep);
+
+            for (var i = 0; i < maxStep; i++)
+            {
+                int er = l[i].R;
+                int eg = l[i].G;
+                int eb = l[i].B;
+
+                if(Math.Abs(rStep) == 1)
+                    er = rValuesOtherProgression[i];
+                if (Math.Abs(gStep) == 1)
+                    eg = gValuesOtherProgression[i];
+                if (Math.Abs(bStep) == 1)
+                    eb = bValuesOtherProgression[i];
+
+                l[i] = Color.FromArgb(er, eg, eb);
+            }
+            l.Add(d);
+            return l;
+        }
+
+        private static List<int> GetStuff(int s, int d, int maxStep)
+        {
+            var foo = new List<int>();
+            var inc = (d - s);
+            inc = (inc < 0) ? inc - 1 : inc + 1; // Count the 0 as a step
+            var incCounterMax = maxStep / Math.Abs(inc);
+            var incCounterIndex = 0;
+            var startVal = (int)s;
+
+            for (var i = 0; i < maxStep; i++)
+            {
+                foo.Add(startVal);
+                incCounterIndex++;
+                if (incCounterIndex == incCounterMax)
+                {
+                    incCounterIndex = 0;
+                    startVal -= 1;
+                }
+            }
+            for (var i = 0; i < maxStep; i++)
+            {
+                if (foo[i] < 0) foo[i] = 0;
+            }
+            return foo;
+        }
+
+        public static Color MoveToColor(Color ss, Color d, int step)
+        {
+            Color s = ss;
+
+            if (s.R < d.R)
+                s = Color.FromArgb(ss.A, Math.Min(s.R + step, d.R), s.G, s.B);
+            else
+                s = Color.FromArgb(ss.A, Math.Max(s.R - step, d.R), s.G, s.B);
+
+            if (s.G < d.G)
+                s = Color.FromArgb(ss.A, s.R, Math.Min(s.G + step, d.G), s.B);
+            else
+                s = Color.FromArgb(ss.A, s.R, Math.Max(s.G - step, d.G), s.B);
+
+            if (s.B < d.B)
+                s = Color.FromArgb(ss.A, s.R, s.G, Math.Min(s.B + step, d.B));
+            else
+                s = Color.FromArgb(ss.A, s.R, s.G, Math.Max(s.B - step, d.B));
+
+            return s;
+        }
+
         public static Color Wheel(int wheelPos)
         {
             byte b = (byte) wheelPos;

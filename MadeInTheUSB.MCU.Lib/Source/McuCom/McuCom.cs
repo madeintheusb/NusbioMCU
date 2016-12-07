@@ -40,7 +40,7 @@ namespace MadeInTheUSB.Communication
         bool IsConnected{ get; }
 
         void Send(byte[] buffer);
-        byte[] ReadBuffer(int len);
+        byte[] ReadBuffer(int len, int minimumSleepWait = 1);
     }
 
     public class McuComBaseClass
@@ -188,7 +188,7 @@ namespace MadeInTheUSB.Communication
 
         //}
 
-        public byte[] ReadBuffer(int expectedLen)
+        public byte[] ReadBuffer(int expectedLen, int minimumSleepWait = 1)
         {
             var globalBuffer = new List<byte>();
             var sleepTime       = 1;
@@ -199,7 +199,9 @@ namespace MadeInTheUSB.Communication
             if(expectedLen > 64)
                 sleepTime = 3;
 
-            Thread.Sleep(sleepTime);
+            // Always start to sleep a specific amount of time. Pixel.show(); require
+            // 50ms of wait time.
+            Thread.Sleep(minimumSleepWait);
 
             while (timeOutCounter < maxTimeOut)
             {

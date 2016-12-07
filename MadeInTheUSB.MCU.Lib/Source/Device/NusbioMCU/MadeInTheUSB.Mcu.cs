@@ -120,7 +120,7 @@ namespace MadeInTheUSB.MCU
 
         protected McuComResponse InitializationDone()
         {
-            return this.OnBoardLed(OnBoardLedMode.Connected);
+            return this.SetOnBoardLed(OnBoardLedMode.Connected);
         }
 
         public virtual McuComResponse Initialize(Mcu.FirmwareName firmwareName = Mcu.FirmwareName.NusbioMcuMatrixPixel)
@@ -133,6 +133,7 @@ namespace MadeInTheUSB.MCU
                 this.Firmware        = this.DetectFirmware();
                 if (this.Firmware == firmwareName)
                 {
+                    this.SetOnBoardLed(OnBoardLedMode.Connected);
                     return McuComResponse.Success;
                 }
                 else
@@ -143,7 +144,7 @@ namespace MadeInTheUSB.MCU
 
         public virtual void Close()
         {
-            this.OnBoardLed(OnBoardLedMode.Disconnected);
+            this.SetOnBoardLed(OnBoardLedMode.Disconnected);
             _mcu.CloseConnection();
         }
 
@@ -151,10 +152,10 @@ namespace MadeInTheUSB.MCU
         /// Wait up to 100 ms for an answer from the NusbioMatrix MCU Firmware
         /// </summary>
         /// <returns></returns>
-        internal McuComResponse ReadAnswer(int expectedSize = 3)
+        internal McuComResponse ReadAnswer(int expectedSize = 3, int minimumWait = 1)
         {
             var r = new McuComResponse();
-            var buffer = this._mcu.ReadBuffer(expectedSize);
+            var buffer = this._mcu.ReadBuffer(expectedSize, minimumWait);
             if (buffer != null)
             {
                 this.Recorder.AddReceived(buffer.ToList());
@@ -294,7 +295,7 @@ namespace MadeInTheUSB.MCU
             Connected       = 75, // will be multiplied by 10
         }
 
-        public McuComResponse OnBoardLed(OnBoardLedMode mode)
+        public McuComResponse SetOnBoardLed(OnBoardLedMode mode)
         {
             Send(Mcu.McuCommand.CP_ONBOAD_LED, (int)mode);
             var r = ReadAnswer();
@@ -303,6 +304,8 @@ namespace MadeInTheUSB.MCU
 
         public McuComResponse Ping()
         {
+            // PING Activate in firmare the non blinking LED
+            // mode, we should call the api from C$ rather
             Send(Mcu.McuCommand.CP_PING);
             var r = ReadAnswer();
             if (r.Succeeded)

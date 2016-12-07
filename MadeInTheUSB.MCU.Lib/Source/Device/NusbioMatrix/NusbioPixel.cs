@@ -34,10 +34,23 @@ using System.Diagnostics;
 
 namespace MadeInTheUSB.MCU
 {
+    public enum NusbioPixelDeviceType
+    {
+        Unknown = 0,
+        Bar10 = 10,
+        Strip30 = 30,
+        Strip60 = 60,
+        Ring12 = 12,
+        Square16 = 16
+    }
+
     public partial class NusbioPixel : NusbioMCU, IDisposable
     {
         public int Count;
 
+        public NusbioPixelDeviceType PixelType = NusbioPixelDeviceType.Unknown;
+
+        public const int DEFAULT_PIXEL_COUNT            = 60;
         public const int MAX_BRIGHTNESS_USB_POWER       = 64;
         public const int MAX_BRIGHTNESS_EXTERNAL_POWER  = 250;
 
@@ -98,10 +111,10 @@ namespace MadeInTheUSB.MCU
             for (var i = 0; i < this.Count-1; i++)
                 this.SetPixel(color); // Use next index
             var r = this.Show();
-            if (r.Succeeded)
-            {
-                var ledDisplayedCount = r.GetParam(0);
-            }
+            //if (r.Succeeded)
+            //{
+            //    var ledDisplayedCount = r.GetParam(0);
+            //}
             return this;
         }
 
@@ -114,7 +127,6 @@ namespace MadeInTheUSB.MCU
         public McuComResponse SetLedCount(int count)
         {
             this.Count = count;
-            return McuComResponse.Success;
             Send(Mcu.McuCommand.CP_RGB_PIXEL_SET_COUNT, (byte)count);
             var r = ReadAnswer();
             if (r.Succeeded)
@@ -129,16 +141,30 @@ namespace MadeInTheUSB.MCU
             else return r;
         }
 
-        public McuComResponse Show()
+        public McuComResponse Show(
+            int minimumWait = 15 // By experimentation it taked between 15 to 30ms to execute the api call with a 60 LED strip
+            )
         {
             Send(Mcu.McuCommand.CP_RGB_PIXEL_DRAW, 0);
-            var r = ReadAnswer();
+            var r = ReadAnswer(minimumWait: minimumWait); // Wait at least 10ms for this api call to be executed
             if (r.Succeeded)
             {
-                var ledDisplayedCount = r.GetParam(0);
+                //var ledDisplayedCount = r.GetParam(0);
                 return r;
             }
             else return r;
+        }
+
+        public McuComResponse SetPixel(int index, System.Drawing.Color color, int count, bool refresh = false)
+        {
+            var r = new McuComResponse();
+            for (var i = 0; i < count; i++) {
+                r = this.SetPixel(i, color);
+                if (!r.Succeeded) return r;
+            }
+            if (refresh)
+                this.Show();
+            return r;
         }
 
         public McuComResponse SetPixel(int index, System.Drawing.Color color)
@@ -157,9 +183,10 @@ namespace MadeInTheUSB.MCU
             buffer.Add((byte)g);
             buffer.Add((byte)b);
             this.Send(Mcu.McuCommand.CP_RGB_PIXEL_SET_COLOR_NO_INDEX, r, buffer.ToArray());
+            SetPixelWait();
             return McuComResponse.Success;
         }
-
+        
         public McuComResponse SetPixel(int index, int r, int g, int b)
         {
             var buffer = new List<byte>();
@@ -167,9 +194,14 @@ namespace MadeInTheUSB.MCU
             buffer.Add((byte)g);
             buffer.Add((byte)b);
             this.Send(Mcu.McuCommand.CP_RGB_PIXEL_SET_COLOR_1BYTE_INDEX, index, buffer.ToArray());
+            SetPixelWait();
             return McuComResponse.Success;
         }
 
+        private void SetPixelWait()
+        {
+            ///System.Threading.Thread.Sleep(2);
+        }
         
         public int GetMaxBrightness()
         {

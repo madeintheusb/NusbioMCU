@@ -56,7 +56,7 @@ namespace MadeInTheUSB.MCU
         public string GetByteSecondSentStatus(bool reset = false)
         {
             var s = string.Format(
-                "{0:0.000} KByte/S, {1} Bytes, {2:0.0} ms    ",
+                "{0:00.000} KByte/S, {1} Bytes, {2:0.0} ms    ",
                 this.GetKByteSecondSent(),
                 this._bytePerSecondByteCount,
                 this._bytePerSecondDuration.TotalMilliseconds
