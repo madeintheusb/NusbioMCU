@@ -209,10 +209,10 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(0, "Analog Write/PWM Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
             var quit = false;
-            int speed = 60;
+            int speed = 100;
             int step = 4;
-            var pin = Mcu.GpioPwmPin.Gpio6;
-            var maxPWM = 256 / 2;
+            var pin = Mcu.GpioPwmPin.Gpio5;
+            var maxPWM = 256 / 1;
 
             while (!quit)
             {
@@ -225,6 +225,7 @@ namespace NusbioMatrixConsole
                     if (quit) break;
                 }
                 if (quit) break;
+                Thread.Sleep(speed * 4);
                 for (var i = maxPWM; i>=0; i -= step)
                 {
                     ConsoleEx.WriteLine(0, 2, string.Format("pin:{0}, value:{1} ", pin, i), ConsoleColor.Yellow);

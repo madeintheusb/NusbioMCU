@@ -231,7 +231,7 @@ namespace NusbioMatrixConsole
                 {
                     ConsoleEx.Write(0, 2, string.Format("x:{0:00}, y:{1:00}, r:{2:00}, speed:{3:000}", animation.Point.X, animation.Point.Y, animation.Ray, speed), ConsoleColor.White);
                     animation.Draw(nusbioMatrix).WriteDisplay();
-
+                    
                     if (speed > 0) nusbioMatrix.Sleep(speed);
 
                     CheckKeyboard(ref quit, ref speed, nusbioMatrix);

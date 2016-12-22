@@ -282,6 +282,9 @@ namespace NusbioMatrixConsole
             int speed = nusbioPixel.Count <= 16 ? 10 : 0;
             var jWheelColorStep = 4;
 
+            nusbioPixel.SetBrightness(64*4);
+            speed = 50;
+
             while (!quit)
             {
                 for (var jWheelColorIndex = 0; jWheelColorIndex < 256; jWheelColorIndex += jWheelColorStep)

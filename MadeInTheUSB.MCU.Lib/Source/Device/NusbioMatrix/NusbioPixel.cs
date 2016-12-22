@@ -54,6 +54,10 @@ namespace MadeInTheUSB.MCU
         public const int MAX_BRIGHTNESS_USB_POWER       = 64;
         public const int MAX_BRIGHTNESS_EXTERNAL_POWER  = 250;
 
+        /// <summary>
+        /// A 60 LED Strip requires the 500 mF capacitor
+        /// a max brightness of 64
+        /// </summary>
         public int DEFAULT_BRIGHTNESS
         {
             get

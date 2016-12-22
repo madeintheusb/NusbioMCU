@@ -120,6 +120,7 @@ namespace MadeInTheUSB.Communication
             {
                 try
                 {
+                    this._serialPort.Handshake = Handshake.None;
                     this._serialPort.BaudRate  = this.BaudRate;
                     this._serialPort.Parity    = Parity.None;
                     this._serialPort.StopBits  = StopBits.One;
