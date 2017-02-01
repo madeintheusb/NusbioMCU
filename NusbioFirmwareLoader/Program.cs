@@ -61,6 +61,7 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue);
             ConsoleEx.WriteMenu(-1, 2, "U)pload firmware");
             ConsoleEx.WriteMenu(-1, 4, "Q)uit");
+            ConsoleEx.WriteMenu(-1, 20, string.Format("ARDUINO_IDE:{0}", ARDUINO_IDE));
 
             //var m = string.Format("Firmware {0} v {1}, Port:{2}", nusbioMatrix.Firmware, nusbioMatrix.FirmwareVersion, nusbioMatrix.ComPort);
             var m = "";
@@ -89,7 +90,7 @@ namespace NusbioMatrixConsole
             return null;
         }
 
-        const string ARDUINO_IDE = @"C:\DVT\Arduino\Arduino-1.6.9";
+        public static string ARDUINO_IDE = @"C:\DVT\Arduino\Arduino-1.6.9";
 
         static string LastFirmwareFile
         {
@@ -138,8 +139,14 @@ namespace NusbioMatrixConsole
             }
             else
             {
-                Console.Write("Enter NusbioMCU COM port (COM3)?");
+                Console.WriteLine();
+                Console.Write("Enter NusbioMCU COM port (COMX)?");
                 comPort = Console.ReadLine();
+
+                Console.Write("Arduino IDE Path ({0})?", ARDUINO_IDE);
+                var tmpArduinoIDE = Console.ReadLine();
+                if (tmpArduinoIDE == "")
+                    tmpArduinoIDE = ARDUINO_IDE;
             }
             Cls();
 

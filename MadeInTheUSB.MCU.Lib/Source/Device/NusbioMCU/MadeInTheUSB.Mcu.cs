@@ -74,23 +74,33 @@ namespace MadeInTheUSB.MCU
             _mcu.CleanBuffers();
         }
 
-        public string DetectMcuComPort(Mcu.FirmwareName expectedFirmware = Mcu.FirmwareName.NusbioMcuMatrixPixel, int reTry = 5)
+        public string DetectMcuComPort(
+            params Mcu.FirmwareName [] expectedFirmwares
+            )
         {
+            List<Mcu.FirmwareName> expectedFirmwares2 = expectedFirmwares.ToList();
+            if(expectedFirmwares2.Count == 0)
+            {
+                expectedFirmwares2.Add(Mcu.FirmwareName.NusbioMcuMatrixPixel);
+                expectedFirmwares2.Add(Mcu.FirmwareName.NusbioMcu2StripPixels);
+            }
+            
+            int reTry = 5;
             int tryCounter = 0;
-            int waitTime = 1000;
+            int waitTime = 500;
             while (tryCounter < reTry)
             {
-                var comPort = __DetectMcuComPort(expectedFirmware);
+                var comPort = __DetectMcuComPort(expectedFirmwares2.ToList());
                 if (comPort != null)
                     return comPort;
                 tryCounter++;
                 Thread.Sleep(waitTime);
-                waitTime += 1250;
+                waitTime += 500;
             }
             return null;
         }
 
-        private string __DetectMcuComPort(Mcu.FirmwareName expectedFirmware )
+        private string __DetectMcuComPort(List<Mcu.FirmwareName> expectedFirmwares)
         {
             var ports = McuCom.GetMcuPortName();
             foreach (var p in ports)
@@ -102,7 +112,7 @@ namespace MadeInTheUSB.MCU
                     if (this.Ping().Succeeded) // This will turn on the on board led
                     {
                         this.Firmware = this.DetectFirmware();
-                        if (this.Firmware == expectedFirmware)
+                        if (expectedFirmwares.Contains(this.Firmware))
                             return p;
                     }
                 }
@@ -123,15 +133,24 @@ namespace MadeInTheUSB.MCU
             return this.SetOnBoardLed(OnBoardLedMode.Connected);
         }
 
-        public virtual McuComResponse Initialize(Mcu.FirmwareName firmwareName = Mcu.FirmwareName.NusbioMcuMatrixPixel)
+        public virtual McuComResponse Initialize(
+            List<Mcu.FirmwareName> firmwareNames = null)
         {
+            if (firmwareNames == null)
+                firmwareNames = new List<Mcu.FirmwareName>();
+            if (firmwareNames.Count == 0)
+            {
+                firmwareNames.Add(Mcu.FirmwareName.NusbioMcuMatrixPixel);
+                firmwareNames.Add(Mcu.FirmwareName.NusbioMcu2StripPixels);
+            }
+
             this._mcu = new McuCom(this._comPort, this._baud);
             var r = this.Ping();
             if (r.Succeeded)
             {
                 this.FirmwareVersion = r.GetParam(1);
                 this.Firmware        = this.DetectFirmware();
-                if (this.Firmware == firmwareName)
+                if (firmwareNames.Contains(this.Firmware))
                 {
                     this.SetOnBoardLed(OnBoardLedMode.Connected);
                     return McuComResponse.Success;

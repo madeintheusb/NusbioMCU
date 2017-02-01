@@ -63,9 +63,20 @@ namespace MadeInTheUSB.MCU
             this.ResetBytePerSecondCounters();
         }
 
-        public override McuComResponse Initialize(Mcu.FirmwareName firmwareName = Mcu.FirmwareName.NusbioMcuEeprom)
+        /// <summary>
+        /// EEPROM Firmware has never been finished
+        /// </summary>
+        /// <param name="firmwareNames"></param>
+        /// <returns></returns>
+        public override McuComResponse Initialize(List<Mcu.FirmwareName> firmwareNames = null)
         {
-            var r = base.Initialize(firmwareName);
+            if (firmwareNames == null)
+                firmwareNames = new List<Mcu.FirmwareName>();
+
+            if (firmwareNames.Count == 0)
+                firmwareNames.Add(Mcu.FirmwareName.NusbioMcuEeprom);
+
+            var r = base.Initialize(firmwareNames);
             if (r.Succeeded)
             {
                 var eepromInfo = this.GetInfo();

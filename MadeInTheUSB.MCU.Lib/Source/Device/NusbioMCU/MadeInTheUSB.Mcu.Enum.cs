@@ -29,6 +29,7 @@ namespace MadeInTheUSB.MCU
 {
     public class Mcu
     {
+        public const int CP_RGB_PIXEL_2_STRIP_CMD_OFFSET = 220;
         /// <summary>
         /// Common api to all the MadeInTheUSB MCU ATMega328 based device 
         /// </summary>
@@ -57,6 +58,14 @@ namespace MadeInTheUSB.MCU
             CP_RGB_PIXEL_DRAW				   =24, // Refresh strip
             CP_RGB_PIXEL_SET_BRIGTHNESS        =25,
 
+
+            CP_RGB_PIXEL_2_SET_COUNT             = 20+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET, // Follow by an int (byte 0, byte 1)
+            CP_RGB_PIXEL_2_SET_COLOR_1BYTE_INDEX = 21+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET, // 1 byte for pixel index, r,g,b as byte. Faster is index is less than 256
+            CP_RGB_PIXEL_2_SET_COLOR_NO_INDEX    = 22+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET, // r,g,b as byte, inc last index position
+            CP_RGB_PIXEL_2_SET_COLOR_2BYTE_INDEX = 23+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET, // 2 byte for pixel index, r,g,b as byte
+            CP_RGB_PIXEL_2_DRAW                  = 24+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET, // Refresh strip
+            CP_RGB_PIXEL_2_SET_BRIGTHNESS        = 25+ CP_RGB_PIXEL_2_STRIP_CMD_OFFSET,
+
             // EEPROM 25AA1024 size:128kByte page.size:256, page.count:512
             CP_EEPROM_GET_INFO                = 30, // Return page.size/4, page.count/4
             CP_EEPROM_SET_ADDR				  = 31, // Set address for next read or write operation
@@ -74,9 +83,10 @@ namespace MadeInTheUSB.MCU
         /// </summary>
         public enum FirmwareName
         {
-            Unknown       = 0,
-            NusbioMcuMatrixPixel = 1,
-            NusbioMcuEeprom = 2,
+            Unknown               = 0,
+            NusbioMcuMatrixPixel  = 1,
+            NusbioMcuEeprom       = 2, // Not used
+            NusbioMcu2StripPixels = 4,
         }
 
         public enum DigitalIOMode

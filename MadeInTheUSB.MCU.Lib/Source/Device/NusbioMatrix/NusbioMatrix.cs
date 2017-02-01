@@ -93,9 +93,9 @@ namespace MadeInTheUSB.MCU
             this.MatrixCount    = maxtrixCount;
         }
 
-        public override McuComResponse Initialize(Mcu.FirmwareName firmwareName = Mcu.FirmwareName.NusbioMcuMatrixPixel)
+        public override McuComResponse Initialize(List<Mcu.FirmwareName> firmwareNames = null)
         {
-            var r = base.Initialize(firmwareName);
+            var r = base.Initialize(firmwareNames);
             if (r.Succeeded)
             {
                 if (this.SetMatrixCount(this.MatrixCount).Succeeded)
