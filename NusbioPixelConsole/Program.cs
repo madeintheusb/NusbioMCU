@@ -1,4 +1,5 @@
-﻿/*
+﻿#define _300_LEDS
+/*
     Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
     Copyright (C) 2016 MadeInTheUSB LLC
     Written by FT
@@ -286,7 +287,7 @@ namespace NusbioMatrixConsole
             int speed               = 10;
             var jWheelColorStep     = 4;
 
-            var brightness = 164; // This is for NusbioMCUpixel, will automatically reduce for NusbioMCU
+            var brightness = 190; // This is for NusbioMCUpixel, will automatically reduce for NusbioMCU
 
             nusbioPixel.SetBrightness(brightness);
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
@@ -295,7 +296,8 @@ namespace NusbioMatrixConsole
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                 speed /= 2;
 
-            speed = 0;
+            if (nusbioPixel.Count > 100)
+                speed = 0;
 
             while (!quit)
             {
@@ -309,7 +311,7 @@ namespace NusbioMatrixConsole
                         var color = Color.Beige;
 
                         if (rainbowEffect == RainbowEffect.AllStrip)
-                            color = RGBHelper.Wheel((iStrip0+jWheelColorIndex) & 255);
+                            color = RGBHelper.Wheel((jWheelColorIndex) & 255);
                         else if(rainbowEffect == RainbowEffect.Spread)
                             color = RGBHelper.Wheel((iStrip0 * 256 / nusbioPixel.Count) + jWheelColorIndex);
 
@@ -430,14 +432,23 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
-            var pixelTypeChar = ConsoleEx.Question(1, "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12", new List<char>() {'3', '6', 'S', 'R'});
+            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12";
+            #if _300_LEDS
+            m += " 3 H)undred";
+            #endif
+            var pixelTypeChar = ConsoleEx.Question(1, 
+                m , new List<char>() {'3', '6', 'S', 'R'
+                        #if _300_LEDS
+                        , 'H'
+                        #endif
+                });
             switch (pixelTypeChar)
             {
                 case '3': return NusbioPixelDeviceType.Strip30;
                 case '6': return NusbioPixelDeviceType.Strip60;
                 case 'S': return NusbioPixelDeviceType.Square16;
                 case 'R': return NusbioPixelDeviceType.Ring12;
-                //case 'H': return NusbioPixelDeviceType.Strip300;
+                case 'H': return NusbioPixelDeviceType.Strip300;
             }
             return NusbioPixelDeviceType.Unknown;
         }

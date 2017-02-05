@@ -1,4 +1,5 @@
-﻿'
+﻿'#Const _300_LEDS = True
+'
 '    Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
 '    Copyright (C) 2016 MadeInTheUSB LLC
 '    Written by FT
@@ -34,7 +35,6 @@ Imports MadeInTheUSB.Components
 Namespace NusbioPixelConsole
 
     Class Program
-
         Shared _rgbLedType As NusbioPixelDeviceType
 
         Public Shared Function GetAssemblyCopyright() As String
@@ -80,13 +80,12 @@ Namespace NusbioPixelConsole
             ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue)
 
             ConsoleEx.WriteMenu(-1, 2, "0) Rainbow all strip demo  1) Rainbow spread demo  S)quare demo  L)ine demo")
-            ConsoleEx.WriteMenu(-1, 4, "C)hristmas Colors")
             ConsoleEx.WriteMenu(-1, 6, "I)nit device  Q)uit")
 
             'var maxtrixCount = nusbioMatrix.Count;
-            'var m = string.Format("Firmware {0} v {1}, Port:{2}, LED Count:{3}", nusbioMatrix.Firmware, nusbioMatrix.FirmwareVersion, nusbioMatrix.ComPort, maxtrixCount);
-            'ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 3, m, ConsoleColor.White, ConsoleColor.DarkCyan);
-            'ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue);
+            Dim m = String.Format("Firmware {0} v {1}, Port:{2}, LED Count:{3}", nusbioMatrix.Firmware, nusbioMatrix.FirmwareVersion, nusbioMatrix.ComPort, nusbioMatrix.Count)
+            ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 3, m, ConsoleColor.White, ConsoleColor.DarkCyan)
+            ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue)
         End Sub
 
         Private Shared Function ConnectToMCU(nusbioPixel As NusbioPixel, maxLed As Integer) As NusbioPixel
@@ -102,7 +101,14 @@ Namespace NusbioPixelConsole
             nusbioPixel = New NusbioPixel(maxLed, comPort)
             If nusbioPixel.Initialize().Succeeded Then
                 If nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS).Succeeded Then
-                    Return nusbioPixel
+                    If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                        nusbioPixel.PowerMode = PowerMode.EXTERNAL
+                        If nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS, NusbioPixel.StripIndex.S1).Succeeded Then
+                            Return nusbioPixel
+                        End If
+                    Else
+                        Return nusbioPixel
+                    End If
                 End If
             End If
             Return Nothing
@@ -119,6 +125,7 @@ Namespace NusbioPixelConsole
 
 
         Private Shared Sub SquareDemo(nusbioPixel As NusbioPixel)
+
             Console.Clear()
             ConsoleEx.TitleBar(0, "Square 8x8 Demo")
             ConsoleEx.WriteMenu(-1, 6, "Q)uit")
@@ -127,12 +134,13 @@ Namespace NusbioPixelConsole
             Dim quit = False
             Dim jStep = 32
             Dim bkColor As Color
+            Dim i As Int16
 
             While Not quit
                 Dim j = 0
                 While j < 256
                     ConsoleEx.WriteLine(0, 2, String.Format("jStep:{0:000}", j), ConsoleColor.White)
-                    Dim i As Integer
+
                     For i = 0 To nusbioPixel.Count - 1
                         If i = 0 OrElse True Then
                             bkColor = RGBHelper.Wheel((i + j) And 255)
@@ -177,32 +185,30 @@ Namespace NusbioPixelConsole
             Dim speed As Integer = If(nusbioPixel.Count < 30, 75, 0)
             Dim wheelColorMaxStep = 256
             Dim jWheelColorStep = 4
-            Dim color__1 As Color = Color.Beige
+            Dim color1 As Color = Color.Beige
+            Dim i As Int16
 
             While Not quit
-
                 Dim jWheelColorIndex = 0
-
                 While jWheelColorIndex < wheelColorMaxStep
-
                     ' Set the background color of the strip
                     ConsoleEx.WriteLine(0, 2, String.Format("jWheelColorIndex:{0:000}, jWheelColorStep:{1:000}, Speed:{2:000}", jWheelColorIndex, jWheelColorStep, speed), ConsoleColor.White)
                     Dim sw = Stopwatch.StartNew()
-                    color__1 = RGBHelper.Wheel((jWheelColorIndex) And 255)
-                    For i As Integer = 0 To nusbioPixel.Count - 1
+                    color1 = RGBHelper.Wheel((jWheelColorIndex) And 255)
+                    For i = 0 To nusbioPixel.Count - 1
                         ' Set all te pixel to one color
                         If i = 0 Then
-                            nusbioPixel.SetPixel(i, color__1)
+                            nusbioPixel.SetPixel(i, color1)
                         Else
                             ' Set led index to 0
-                            nusbioPixel.SetPixel(color__1)
+                            nusbioPixel.SetPixel(color1)
                         End If
 
                         If i Mod 4 = 0 Then
                             Console.WriteLine()
                         End If
                         ' , ToHexValue(color) html value
-                        Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", i, color__1.R, color__1.G, color__1.B)
+                        Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", i, color1.R, color1.G, color1.B)
                     Next
                     sw.[Stop]()
                     ConsoleEx.Write(0, 20, String.Format("SetPixel() Time:{0:000}ms, {1}", sw.ElapsedMilliseconds, nusbioPixel.GetByteSecondSentStatus(True)), ConsoleColor.Cyan)
@@ -221,7 +227,7 @@ Namespace NusbioPixelConsole
                     ' Set the foreground Color or animation color scrolling
                     sw = Stopwatch.StartNew()
                     Dim fgColor = RGBHelper.Wheel((jWheelColorIndex + CInt(jWheelColorStep * 4)) And 255)
-                    For i As Integer = 0 To halfLedCount - 1
+                    For i = 0 To halfLedCount - 1
                         nusbioPixel.SetPixel(i, fgColor)
                         nusbioPixel.SetPixel(nusbioPixel.Count - i, fgColor)
                         nusbioPixel.Show()
@@ -266,54 +272,80 @@ Namespace NusbioPixelConsole
             Return d1 + (d2 - d1) * fraction
         End Function
 
-        Private Shared Sub RainbowDemo(nusbioPixel As NusbioPixel, rainbowEffect__1 As RainbowEffect)
+        Private Shared Sub RainbowDemo(nusbioPixel As NusbioPixel, rainbowEffect__2 As RainbowEffect)
             Console.Clear()
             ConsoleEx.TitleBar(0, "Rainbow Demo")
             ConsoleEx.WriteMenu(-1, 6, "Q)uit")
 
             Dim maxShowPerformance As Long = 0
             Dim minShowPerformance As Long = Long.MaxValue
-            nusbioPixel.SetBrightness(64)
-
             Dim quit = False
-            Dim speed As Integer = If(nusbioPixel.Count <= 16, 10, 0)
+            Dim speed As Integer = 10
             Dim jWheelColorStep = 4
+
+            Dim brightness = 190
+            ' This is for NusbioMCUpixel, will automatically reduce for NusbioMCU
+            nusbioPixel.SetBrightness(brightness)
+            If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                nusbioPixel.SetBrightness(brightness, NusbioPixel.StripIndex.S1)
+            End If
+
+            If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                speed /= 2
+            End If
+
+            If nusbioPixel.Count > 100 Then
+                speed = 0
+            End If
 
             While Not quit
                 Dim jWheelColorIndex = 0
                 While jWheelColorIndex < 256
                     ConsoleEx.WriteLine(0, 2, String.Format("jWheelColorIndex:{0:000}, jWheelColorStep:{1:00}", jWheelColorIndex, jWheelColorStep), ConsoleColor.White)
-
                     Dim sw = Stopwatch.StartNew()
 
-                    For i As Integer = 0 To nusbioPixel.Count - 1
-                        Dim color__2 = Color.Beige
+                    For iStrip0 As Integer = 0 To nusbioPixel.Count - 1
+                        Dim color3 = Color.Beige
 
-                        If rainbowEffect__1 = RainbowEffect.AllStrip Then
-                            color__2 = RGBHelper.Wheel((i + jWheelColorIndex) And 255)
-                        ElseIf rainbowEffect__1 = RainbowEffect.Spread Then
-                            color__2 = RGBHelper.Wheel((i * 256 / nusbioPixel.Count) + jWheelColorIndex)
+                        If rainbowEffect__2 = RainbowEffect.AllStrip Then
+                            color3 = RGBHelper.Wheel((jWheelColorIndex) And 255)
+                        ElseIf rainbowEffect__2 = RainbowEffect.Spread Then
+                            color3 = RGBHelper.Wheel((iStrip0 * 256 / nusbioPixel.Count) + jWheelColorIndex)
                         End If
 
-                        If i = 0 Then
-                            nusbioPixel.SetPixel(i, color__2.R, color__2.G, color__2.B)
+                        If iStrip0 = 0 Then
+                            ' Setting the pixel this way, will support more than 255 LED
+                            nusbioPixel.SetPixel(iStrip0, color3.R, color3.G, color3.B)
                         Else
                             ' Set led index to 0
-                            nusbioPixel.SetPixel(color__2.R, color__2.G, color__2.B)
+                            nusbioPixel.SetPixel(color3.R, color3.G, color3.B)
+                        End If
+                        ' Set led index to 0
+                        If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels AndAlso nusbioPixel.Count <= 120 Then
+                            If iStrip0 = 0 Then
+                                ' Setting the pixel this way, will support more than 255 LED
+                                nusbioPixel.SetPixel(iStrip0, color3.R, color3.G, color3.B, NusbioPixel.StripIndex.S1)
+                            Else
+                                ' Set led index to 0
+                                nusbioPixel.SetPixel(color3.R, color3.G, color3.B, NusbioPixel.StripIndex.S1)
+                            End If
                         End If
 
-                        If i Mod 4 = 0 Then
-                            Console.WriteLine()
+                        If nusbioPixel.Count <= 120 Then
+                            If iStrip0 Mod 4 = 0 Then
+                                Console.WriteLine()
+                            End If
+                            ' , ToHexValue(color) html value
+                            Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", iStrip0, color3.R, color3.G, color3.B)
                         End If
-
-                        ' , ToHexValue(color) html value
-                        Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", i, color__2.R, color__2.G, color__2.B)
                     Next
-                    sw.[Stop]()
-                    ConsoleEx.Write(0, 22, String.Format("SetPixel() Time:{0:000}ms, {1}", sw.ElapsedMilliseconds, nusbioPixel.GetByteSecondSentStatus(True)), ConsoleColor.Cyan)
-
-                    sw = Stopwatch.StartNew()
+                    'sw.Stop();
+                    'ConsoleEx.Write(0, 22, string.Format("SetPixel() Time:{0:000}ms, {1}", sw.ElapsedMilliseconds, nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
+                    'sw = Stopwatch.StartNew();
                     nusbioPixel.Show()
+                    If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                        nusbioPixel.Show(NusbioPixel.StripIndex.S1)
+                    End If
                     sw.[Stop]()
 
                     If sw.ElapsedMilliseconds < minShowPerformance Then
@@ -323,7 +355,7 @@ Namespace NusbioPixelConsole
                         maxShowPerformance = sw.ElapsedMilliseconds
                     End If
 
-                    ConsoleEx.Write(0, 23, String.Format("Show() Time:{0:000}ms max:{1:000} min:{2:000}, {3}", sw.ElapsedMilliseconds, maxShowPerformance, minShowPerformance, nusbioPixel.GetByteSecondSentStatus(True)), ConsoleColor.Cyan)
+                    ConsoleEx.Write(0, 23, String.Format("SetPixel()/Show() {0}", nusbioPixel.GetByteSecondSentStatus(True)), ConsoleColor.Cyan)
 
                     If speed > 0 Then
                         Thread.Sleep(speed)
@@ -414,11 +446,18 @@ Namespace NusbioPixelConsole
         Private Shared Function AskUserForPixelType() As NusbioPixelDeviceType
             Console.Clear()
             ConsoleEx.TitleBar(0, GetAssemblyProduct())
-            Dim pixelTypeChar = ConsoleEx.Question(1, "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12", New List(Of Char)() From {
+            Dim m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12"
+#If _300_LEDS Then
+			m += " 3 H)undred"
+#End If
+#If _300_LEDS Then
+#End If
+            Dim pixelTypeChar = ConsoleEx.Question(1, m, New List(Of Char)() From {
                 "3"c,
                 "6"c,
                 "S"c,
-                "R"c
+                "R"c,
+                "H"c
             })
             Select Case pixelTypeChar
                 Case "3"c
@@ -429,6 +468,8 @@ Namespace NusbioPixelConsole
                     Return NusbioPixelDeviceType.Square16
                 Case "R"c
                     Return NusbioPixelDeviceType.Ring12
+                Case "H"c
+                    Return NusbioPixelDeviceType.Strip300
             End Select
             Return NusbioPixelDeviceType.Unknown
         End Function
@@ -442,12 +483,17 @@ Namespace NusbioPixelConsole
             ConsoleEx.TitleBar(0, GetAssemblyProduct())
             Console.WriteLine("")
 
-            Dim nusbioPixel As NusbioPixel = ConnectToMCU(Nothing, MAX_LED)
-            If nusbioPixel Is Nothing Then
+            Dim nusbioPixel__1 As NusbioPixel = ConnectToMCU(Nothing, MAX_LED)
+            If nusbioPixel__1 Is Nothing Then
                 Return
             End If
-            nusbioPixel.SetStrip(Color.Green)
-            Cls(nusbioPixel)
+
+            nusbioPixel__1.SetStrip(Color.Green)
+            If nusbioPixel__1.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                nusbioPixel__1.SetStrip(Color.Green, stripIndex:=NusbioPixel.StripIndex.S1)
+            End If
+
+            Cls(nusbioPixel__1)
 
             While Not quit
                 If Console.KeyAvailable Then
@@ -456,30 +502,31 @@ Namespace NusbioPixelConsole
                         quit = True
                     End If
                     If k = ConsoleKey.D0 Then
-                        RainbowDemo(nusbioPixel, RainbowEffect.AllStrip)
+                        RainbowDemo(nusbioPixel__1, RainbowEffect.AllStrip)
                     End If
                     If k = ConsoleKey.D1 Then
-                        RainbowDemo(nusbioPixel, RainbowEffect.Spread)
+                        RainbowDemo(nusbioPixel__1, RainbowEffect.Spread)
                     End If
                     If k = ConsoleKey.S Then
-                        SquareDemo(nusbioPixel)
+                        SquareDemo(nusbioPixel__1)
                     End If
                     If k = ConsoleKey.L Then
-                        LineDemo(nusbioPixel)
+                        LineDemo(nusbioPixel__1)
                     End If
 
                     If k = ConsoleKey.I Then
-                        nusbioPixel = ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green)
+                        nusbioPixel__1 = ConnectToMCU(nusbioPixel__1, MAX_LED).Wait(500).SetStrip(Color.Green)
                     End If
-                    Cls(nusbioPixel)
+                    Cls(nusbioPixel__1)
                 Else
                     ConsoleEx.WaitMS(100)
                 End If
             End While
-            nusbioPixel.Dispose()
+            nusbioPixel__1.Dispose()
         End Sub
     End Class
 End Namespace
+
 
 Module main
 
@@ -488,4 +535,3 @@ Module main
     End Sub
 
 End Module
-
