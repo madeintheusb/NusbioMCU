@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NusbioSensor Console")]
+[assembly: AssemblyTitle("NusbioMCU - Sensor Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MadeInTheUSB LLC")]
-[assembly: AssemblyProduct("NusbioSensor Console")]
-[assembly: AssemblyCopyright("Copyright (C) MadeInTheUSB")]
+[assembly: AssemblyProduct("NusbioMCU - Sensor Console")]
+[assembly: AssemblyCopyright("Copyright (C) MadeInTheUSB LLC 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

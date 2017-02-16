@@ -163,41 +163,6 @@ namespace NusbioMatrixConsole
             }
         }
 
-        static void Main(string[] args)
-        {
-            Console.Clear();
-            ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue);
-            NusbioMCU nusbioMCU = ConnectToMCU(null);
-            if (nusbioMCU == null) return;
-            var quit = false;
-            var halfSecondTimeOut = new TimeOut(500);
-
-            Cls(nusbioMCU);
-
-            while (!quit)
-            {
-                if (Console.KeyAvailable)
-                {
-                    var k = Console.ReadKey(true).Key;
-                    if (k == ConsoleKey.Q) quit = true;
-                    if (k == ConsoleKey.L) LightSensorDemo(nusbioMCU);
-
-                    if (k == ConsoleKey.D4) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio4, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio4));
-                    if (k == ConsoleKey.D5) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio5, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio5));
-                    if (k == ConsoleKey.D6) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio6, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio6));
-                    if (k == ConsoleKey.D7) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio7, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio7));
-                    if (k == ConsoleKey.O) foreach(var p in NusbioMatrix.AllGpios) nusbioMCU.DigitalWrite(p, false );
-
-                    if (k == ConsoleKey.D) DigitalReadDemo(nusbioMCU);
-                    if (k == ConsoleKey.A) AnalogReadDemo(nusbioMCU);
-                    if (k == ConsoleKey.W) AnalogWritePWMTest(nusbioMCU);
-                    if (k == ConsoleKey.T) TestAnalogPortWithNusbioTestExtension(nusbioMCU);
-
-                    Cls(nusbioMCU);
-                }
-            }
-            nusbioMCU.Close();
-        }
 
         private static void AnalogWritePWMTest(NusbioMCU nusbioMCU)
         {
@@ -336,6 +301,44 @@ namespace NusbioMatrixConsole
             {
                 nusbioMCU.SetOnBoardLed(NusbioMCU.OnBoardLedMode.Connected);
             }
+        }
+
+
+        static void Main(string[] args)
+        {
+            Console.Clear();
+            ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue);
+            ConsoleEx.WriteLine(0, 0, "", ConsoleColor.Yellow);
+            NusbioMCU nusbioMCU = ConnectToMCU(null);
+            if (nusbioMCU == null) return;
+            var quit = false;
+            var halfSecondTimeOut = new TimeOut(500);
+
+            Cls(nusbioMCU);
+
+            while (!quit)
+            {
+                if (Console.KeyAvailable)
+                {
+                    var k = Console.ReadKey(true).Key;
+                    if (k == ConsoleKey.Q) quit = true;
+                    if (k == ConsoleKey.L) LightSensorDemo(nusbioMCU);
+
+                    if (k == ConsoleKey.D4) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio4, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio4));
+                    if (k == ConsoleKey.D5) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio5, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio5));
+                    if (k == ConsoleKey.D6) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio6, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio6));
+                    if (k == ConsoleKey.D7) nusbioMCU.DigitalWrite(Mcu.GpioPin.Gpio7, !nusbioMCU.DigitalRead(Mcu.GpioPin.Gpio7));
+                    if (k == ConsoleKey.O) foreach (var p in NusbioMatrix.AllGpios) nusbioMCU.DigitalWrite(p, false);
+
+                    if (k == ConsoleKey.D) DigitalReadDemo(nusbioMCU);
+                    if (k == ConsoleKey.A) AnalogReadDemo(nusbioMCU);
+                    if (k == ConsoleKey.W) AnalogWritePWMTest(nusbioMCU);
+                    if (k == ConsoleKey.T) TestAnalogPortWithNusbioTestExtension(nusbioMCU);
+
+                    Cls(nusbioMCU);
+                }
+            }
+            nusbioMCU.Close();
         }
     }
 }
