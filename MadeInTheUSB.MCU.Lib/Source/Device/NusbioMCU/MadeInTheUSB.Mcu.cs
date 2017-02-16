@@ -49,6 +49,8 @@ namespace MadeInTheUSB.MCU
         protected string    _comPort;
         protected int       _baud;
 
+        private const string ERR_MSG_1000 = "ERR1000-Invalid answer from MCU";
+
         /// <summary>
         /// If the RGB LED pixel or the 8x8 LED matrix is powered via NusbioMCU
         /// the current os drawn from the USB. USB amp consumption is limited to 500 mA.
@@ -152,8 +154,7 @@ namespace MadeInTheUSB.MCU
                 this.Firmware        = this.DetectFirmware();
                 if (firmwareNames.Contains(this.Firmware))
                 {
-                    this.SetOnBoardLed(OnBoardLedMode.Connected);
-                    return McuComResponse.Success;
+                    return this.SetOnBoardLed(OnBoardLedMode.Connected);
                 }
                 else
                     return new McuComResponse().Fail(string.Format("Invalid firmware:{0}", this.Firmware));
@@ -318,6 +319,8 @@ namespace MadeInTheUSB.MCU
         {
             Send(Mcu.McuCommand.CP_ONBOAD_LED, (int)mode);
             var r = ReadAnswer();
+            if (r.GetParam(0) != (int)mode)
+                throw new ArgumentException(ERR_MSG_1000);
             return r;
         }
 

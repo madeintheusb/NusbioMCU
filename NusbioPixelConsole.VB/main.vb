@@ -273,6 +273,7 @@ Namespace NusbioPixelConsole
         End Function
 
         Private Shared Sub RainbowDemo(nusbioPixel As NusbioPixel, rainbowEffect__2 As RainbowEffect)
+
             Console.Clear()
             ConsoleEx.TitleBar(0, "Rainbow Demo")
             ConsoleEx.WriteMenu(-1, 6, "Q)uit")
@@ -282,6 +283,7 @@ Namespace NusbioPixelConsole
             Dim quit = False
             Dim speed As Integer = 10
             Dim jWheelColorStep = 4
+            Dim color3 = Color.Beige
 
             Dim brightness = 190
             ' This is for NusbioMCUpixel, will automatically reduce for NusbioMCU
@@ -305,7 +307,6 @@ Namespace NusbioPixelConsole
                     Dim sw = Stopwatch.StartNew()
 
                     For iStrip0 As Integer = 0 To nusbioPixel.Count - 1
-                        Dim color3 = Color.Beige
 
                         If rainbowEffect__2 = RainbowEffect.AllStrip Then
                             color3 = RGBHelper.Wheel((jWheelColorIndex) And 255)
@@ -314,13 +315,11 @@ Namespace NusbioPixelConsole
                         End If
 
                         If iStrip0 = 0 Then
-                            ' Setting the pixel this way, will support more than 255 LED
-                            nusbioPixel.SetPixel(iStrip0, color3.R, color3.G, color3.B)
+                            nusbioPixel.SetPixel(iStrip0, color3.R, color3.G, color3.B) ' Setting the pixel this way, will support more than 255 LED
                         Else
-                            ' Set led index to 0
-                            nusbioPixel.SetPixel(color3.R, color3.G, color3.B)
+                            nusbioPixel.SetPixel(color3.R, color3.G, color3.B) ' Set led index to 0
                         End If
-                        ' Set led index to 0
+
                         If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels AndAlso nusbioPixel.Count <= 120 Then
                             If iStrip0 = 0 Then
                                 ' Setting the pixel this way, will support more than 255 LED
@@ -339,9 +338,6 @@ Namespace NusbioPixelConsole
                             Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", iStrip0, color3.R, color3.G, color3.B)
                         End If
                     Next
-                    'sw.Stop();
-                    'ConsoleEx.Write(0, 22, string.Format("SetPixel() Time:{0:000}ms, {1}", sw.ElapsedMilliseconds, nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
-                    'sw = Stopwatch.StartNew();
                     nusbioPixel.Show()
                     If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
                         nusbioPixel.Show(NusbioPixel.StripIndex.S1)
@@ -483,17 +479,17 @@ Namespace NusbioPixelConsole
             ConsoleEx.TitleBar(0, GetAssemblyProduct())
             Console.WriteLine("")
 
-            Dim nusbioPixel__1 As NusbioPixel = ConnectToMCU(Nothing, MAX_LED)
-            If nusbioPixel__1 Is Nothing Then
+            Dim nusbioPixel As NusbioPixel = ConnectToMCU(Nothing, MAX_LED)
+            If nusbioPixel Is Nothing Then
                 Return
             End If
 
-            nusbioPixel__1.SetStrip(Color.Green)
-            If nusbioPixel__1.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
-                nusbioPixel__1.SetStrip(Color.Green, stripIndex:=NusbioPixel.StripIndex.S1)
+            nusbioPixel.SetStrip(Color.Green)
+            If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
+                nusbioPixel.SetStrip(Color.Green, stripIndex:=NusbioPixel.StripIndex.S1)
             End If
 
-            Cls(nusbioPixel__1)
+            Cls(nusbioPixel)
 
             While Not quit
                 If Console.KeyAvailable Then
@@ -502,27 +498,27 @@ Namespace NusbioPixelConsole
                         quit = True
                     End If
                     If k = ConsoleKey.D0 Then
-                        RainbowDemo(nusbioPixel__1, RainbowEffect.AllStrip)
+                        RainbowDemo(nusbioPixel, RainbowEffect.AllStrip)
                     End If
                     If k = ConsoleKey.D1 Then
-                        RainbowDemo(nusbioPixel__1, RainbowEffect.Spread)
+                        RainbowDemo(nusbioPixel, RainbowEffect.Spread)
                     End If
                     If k = ConsoleKey.S Then
-                        SquareDemo(nusbioPixel__1)
+                        SquareDemo(nusbioPixel)
                     End If
                     If k = ConsoleKey.L Then
-                        LineDemo(nusbioPixel__1)
+                        LineDemo(nusbioPixel)
                     End If
 
                     If k = ConsoleKey.I Then
-                        nusbioPixel__1 = ConnectToMCU(nusbioPixel__1, MAX_LED).Wait(500).SetStrip(Color.Green)
+                        nusbioPixel = ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green)
                     End If
-                    Cls(nusbioPixel__1)
+                    Cls(nusbioPixel)
                 Else
                     ConsoleEx.WaitMS(100)
                 End If
             End While
-            nusbioPixel__1.Dispose()
+            nusbioPixel.Dispose()
         End Sub
     End Class
 End Namespace
