@@ -96,36 +96,6 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 3, m, ConsoleColor.White, ConsoleColor.DarkCyan);
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue);
         }
-
-        private static NusbioPixel ConnectToMCU(NusbioPixel nusbioPixel, int maxLed)
-        {
-            if (nusbioPixel != null)
-            {
-                nusbioPixel.Dispose();
-                nusbioPixel = null;
-            }
-            var comPort = new NusbioPixel().DetectMcuComPort();
-            if (comPort == null)
-            {
-                Console.WriteLine("Nusbio Pixel not detected");
-                return null;
-            }
-            nusbioPixel = new NusbioPixel(maxLed, comPort);
-            if (nusbioPixel.Initialize().Succeeded)
-            {
-                if (nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS).Succeeded)
-                {
-                    if(nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
-                    {
-                        nusbioPixel.PowerMode = PowerMode.EXTERNAL;
-                        if (nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS, NusbioPixel.StripIndex.S1).Succeeded)
-                            return nusbioPixel;
-                    }
-                    else return nusbioPixel;
-                }
-            }
-            return null;
-        }
         
         private static string ToHexValue(Color color)
         {
@@ -286,8 +256,7 @@ namespace NusbioMatrixConsole
             var quit                = false;
             int speed               = 10;
             var jWheelColorStep     = 4;
-
-            var brightness = 190; // This is for NusbioMCUpixel, will automatically reduce for NusbioMCU
+            var brightness          = 190; // This is for NusbioMCUpixel, will automatically reduced for NusbioMCU
 
             nusbioPixel.SetBrightness(brightness);
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
@@ -306,32 +275,32 @@ namespace NusbioMatrixConsole
                     ConsoleEx.WriteLine(0, 2, string.Format("jWheelColorIndex:{0:000}, jWheelColorStep:{1:00}", jWheelColorIndex, jWheelColorStep), ConsoleColor.White);
                     var sw      = Stopwatch.StartNew();
 
-                    for (var iStrip0 = 0; iStrip0 < nusbioPixel.Count; iStrip0++)
+                    for (var pixelIndex = 0; pixelIndex < nusbioPixel.Count; pixelIndex++)
                     {
                         var color = Color.Beige;
 
                         if (rainbowEffect == RainbowEffect.AllStrip)
                             color = RGBHelper.Wheel((jWheelColorIndex) & 255);
                         else if(rainbowEffect == RainbowEffect.Spread)
-                            color = RGBHelper.Wheel((iStrip0 * 256 / nusbioPixel.Count) + jWheelColorIndex);
+                            color = RGBHelper.Wheel((pixelIndex * 256 / nusbioPixel.Count) + jWheelColorIndex);
 
-                        if(iStrip0 == 0) // Setting the pixel this way, will support more than 255 LED
-                            nusbioPixel.SetPixel(iStrip0, color.R, color.G, color.B); // Set led index to 0
+                        if(pixelIndex == 0) // Setting the pixel this way, will support more than 255 LED
+                            nusbioPixel.SetPixel(pixelIndex, color.R, color.G, color.B); // Set led index to 0
                         else
                             nusbioPixel.SetPixel(color.R, color.G, color.B); // Set led index to 0
 
                         if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && nusbioPixel.Count <= 120)
                         {
-                            if (iStrip0 == 0)// Setting the pixel this way, will support more than 255 LED
-                                nusbioPixel.SetPixel(iStrip0, color.R, color.G, color.B, NusbioPixel.StripIndex.S1); // Set led index to 0
+                            if (pixelIndex == 0)// Setting the pixel this way, will support more than 255 LED
+                                nusbioPixel.SetPixel(pixelIndex, color.R, color.G, color.B, NusbioPixel.StripIndex.S1); // Set led index to 0
                             else
                                 nusbioPixel.SetPixel(color.R, color.G, color.B, NusbioPixel.StripIndex.S1);
                         }
 
                         if (nusbioPixel.Count <= 120)
                         {
-                            if (iStrip0 % 4 == 0) Console.WriteLine();
-                            Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", iStrip0, color.R, color.G, color.B); // , ToHexValue(color) html value
+                            if (pixelIndex % 4 == 0) Console.WriteLine();
+                            Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", pixelIndex, color.R, color.G, color.B); // , ToHexValue(color) html value
                         }
                     }
                     //sw.Stop();
@@ -346,6 +315,7 @@ namespace NusbioMatrixConsole
                     if (sw.ElapsedMilliseconds > maxShowPerformance) maxShowPerformance = sw.ElapsedMilliseconds;
 
                     ConsoleEx.Write(0, 23, string.Format("SetPixel()/Show() {0}", nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
+                    
 
                     if (speed > 0)
                         Thread.Sleep(speed);
@@ -353,7 +323,6 @@ namespace NusbioMatrixConsole
                     if (quit)
                         break;
                 }
-                
             }
         }
 
@@ -462,12 +431,9 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
             Console.WriteLine("");
 
-            NusbioPixel nusbioPixel = ConnectToMCU(null, MAX_LED);            
+            NusbioPixel nusbioPixel = NusbioPixel.ConnectToMCU(null, MAX_LED);
             if (nusbioPixel == null) return;
 
-            nusbioPixel.SetStrip(Color.Green);
-            if(nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
-                nusbioPixel.SetStrip(Color.Green, stripIndex: NusbioPixel.StripIndex.S1);
 
             Cls(nusbioPixel);
 
@@ -484,7 +450,7 @@ namespace NusbioMatrixConsole
 
                     if (k == ConsoleKey.I)
                     {
-                        nusbioPixel = ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
+                        nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
                     }
                     Cls(nusbioPixel);
                 }

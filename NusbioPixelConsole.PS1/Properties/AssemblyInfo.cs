@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NusbioPixel Christmas Tree Console")]
+[assembly: AssemblyTitle("NusbioPixel Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MadeInTheUSB LLC")]
-[assembly: AssemblyProduct("NusbioPixel Christmas Tree Console")]
+[assembly: AssemblyProduct("NusbioPixel Console")]
 [assembly: AssemblyCopyright("Copyright (C) MadeInTheUSB")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

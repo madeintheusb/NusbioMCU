@@ -31,7 +31,7 @@ using MadeInTheUSB.Adafruit;
 using MadeInTheUSB.Communication;
 using MadeInTheUSB.WinUtil;
 using System.Diagnostics;
-
+//[MadeInTheUSB.MCU.StripIndex]::S0
 namespace MadeInTheUSB.MCU
 {
     public enum NusbioPixelDeviceType
@@ -49,7 +49,7 @@ namespace MadeInTheUSB.MCU
     {
         public int Count;
 
-        public NusbioPixelDeviceType PixelType = NusbioPixelDeviceType.Unknown;
+        //public NusbioPixelDeviceType PixelType = NusbioPixelDeviceType.Unknown;
 
         public const int DEFAULT_PIXEL_COUNT             = 60;
         public const int MAX_BRIGHTNESS_USB_POWER        = 64;
@@ -76,7 +76,52 @@ namespace MadeInTheUSB.MCU
             }
         }
 
-        public NusbioPixel(int baud = BAUD) : base(null, baud)
+        private static NusbioPixel SetNusbioPixelAsConnected(
+            NusbioPixel nusbioPixel, Color c)
+        {
+            nusbioPixel.SetStrip(c, nusbioPixel.DEFAULT_BRIGHTNESS);
+            if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
+                nusbioPixel.SetStrip(Color.Red, nusbioPixel.DEFAULT_BRIGHTNESS, StripIndex.S1);
+            return nusbioPixel;
+        }
+
+        public static NusbioPixel ConnectToMCU(NusbioPixel nusbioPixel, int maxLed)
+        {
+            if (nusbioPixel != null)
+            {
+                nusbioPixel.Dispose();
+                nusbioPixel = null;
+            }
+            var comPort = new NusbioPixel().DetectMcuComPort();
+            if (comPort == null)
+            {
+                Console.WriteLine("Nusbio Pixel not detected");
+                return null;
+            }
+            nusbioPixel = new NusbioPixel(maxLed, comPort);
+            if (nusbioPixel.Initialize().Succeeded)
+            {
+                if (nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS).Succeeded)
+                {
+                    if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
+                    {
+                        nusbioPixel.PowerMode = PowerMode.EXTERNAL;
+                        if (nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS, NusbioPixel.StripIndex.S1).Succeeded)
+                            return SetNusbioPixelAsConnected(nusbioPixel, Color.Green);
+                    }
+                    else return SetNusbioPixelAsConnected(nusbioPixel, Color.Green);
+                }
+            }
+            return null;
+        }
+
+
+        public NusbioPixel():this(BAUD)
+        {
+
+        }
+
+        public NusbioPixel(int baud) : base(null, baud)
         {
             this._baud = baud;
         }
@@ -122,25 +167,46 @@ namespace MadeInTheUSB.MCU
             return this;
         }
 
-        public NusbioPixel SetStrip(System.Drawing.Color color, int brigthness = -1, StripIndex stripIndex = StripIndex.S0)
+        public NusbioPixel SetStrip(System.Drawing.Color color)
+        {
+            return this.SetStrip(color, -1, StripIndex.S0);
+        }
+
+        public NusbioPixel SetStrip(System.Drawing.Color color, int brigthness)
+        {
+            return this.SetStrip(color, brigthness, StripIndex.S0);
+        }
+
+        public NusbioPixel SetStrip(System.Drawing.Color color, StripIndex stripIndex)
+        {
+            return this.SetStrip(color, -1, stripIndex);
+        }
+
+        public NusbioPixel SetStrip(System.Drawing.Color color, int brigthness, StripIndex stripIndex)
         {
             if (brigthness != -1)
                 this.SetBrightness(brigthness, stripIndex: stripIndex);
 
             this.SetPixel(0, color, stripIndex: stripIndex); // Set LED index to 0
+
             for (var i = 0; i < this.Count-1; i++)
                 this.SetPixel(color, stripIndex: stripIndex); // Use next index
+
             var r = this.Show(stripIndex: stripIndex);
+
             if (!r.Succeeded && System.Diagnostics.Debugger.IsAttached)
                 System.Diagnostics.Debugger.Break();
+
             return this;
         }
-
+                
         public void Dispose()
         {
-            this.SetStrip(Color.Red, this.DEFAULT_BRIGHTNESS);
-            if(this.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
-                this.SetStrip(Color.Red, this.DEFAULT_BRIGHTNESS, StripIndex.S1);
+            SetNusbioPixelAsConnected(this, Color.Red);
+            
+            //this.SetStrip(Color.Red, this.DEFAULT_BRIGHTNESS); // +++
+            //if(this.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
+            //    this.SetStrip(Color.Red, this.DEFAULT_BRIGHTNESS, StripIndex.S1);
             base.Close();
         }
 
@@ -187,17 +253,32 @@ namespace MadeInTheUSB.MCU
             return r;
         }
 
-        public McuComResponse SetPixel(int index, System.Drawing.Color color, StripIndex stripIndex = StripIndex.S0)
+        // Implemented different variant of SetPixel() with overload to be compatible
+        // with PowerShell. PowerShell seems to have an issue with optional parameters
+
+        public McuComResponse SetPixel(int index, System.Drawing.Color color)
+        {
+            return SetPixel(index, color, StripIndex.S0);
+        }
+        public McuComResponse SetPixel(int index, System.Drawing.Color color, StripIndex stripIndex)
         {
             return this.SetPixel(index, color.R, color.G, color.B, stripIndex:stripIndex);
         }
 
-        public McuComResponse SetPixel(System.Drawing.Color color, StripIndex stripIndex = StripIndex.S0)
+        public McuComResponse SetPixel(System.Drawing.Color color)
+        {
+            return this.SetPixel(color, StripIndex.S0);
+        }
+        public McuComResponse SetPixel(System.Drawing.Color color, StripIndex stripIndex)
         {
             return this.SetPixel(color.R, color.G, color.B, stripIndex: stripIndex);
         }
-        
-        public McuComResponse SetPixel(int r, int g, int b, StripIndex stripIndex = StripIndex.S0)
+
+        public McuComResponse SetPixel(int r, int g, int b)
+        {
+            return this.SetPixel(r, g, b, StripIndex.S0);
+        }
+        public McuComResponse SetPixel(int r, int g, int b, StripIndex stripIndex)
         {
             var buffer = new List<byte>();
             buffer.Add((byte)g);
@@ -206,8 +287,12 @@ namespace MadeInTheUSB.MCU
             SetPixelWait();
             return McuComResponse.Success;
         }
-        
-        public McuComResponse SetPixel(int index, int r, int g, int b, StripIndex stripIndex = StripIndex.S0)
+
+        public McuComResponse SetPixel(int index, int r, int g, int b)
+        {
+            return SetPixel(index, r, g, b, StripIndex.S0);
+        }
+        public McuComResponse SetPixel(int index, int r, int g, int b, StripIndex stripIndex)
         {
             var buffer = new List<byte>();
             buffer.Add((byte)r);

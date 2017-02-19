@@ -60,7 +60,10 @@ namespace MadeInTheUSB.MCU
         public Mcu.FirmwareName Firmware;
         public int FirmwareVersion;
 
-        public string Port { get { return this._comPort; } }
+        public string ComPort
+        {
+            get { return _mcu.PortName; }
+        }
 
         public NusbioMCUProtocolRecorder Recorder = new NusbioMCUProtocolRecorder();
 
@@ -97,7 +100,7 @@ namespace MadeInTheUSB.MCU
                     return comPort;
                 tryCounter++;
                 Thread.Sleep(waitTime);
-                waitTime += 500;
+                waitTime += 600;
             }
             return null;
         }
@@ -168,10 +171,6 @@ namespace MadeInTheUSB.MCU
             _mcu.CloseConnection();
         }
 
-        /// <summary>
-        /// Wait up to 100 ms for an answer from the NusbioMatrix MCU Firmware
-        /// </summary>
-        /// <returns></returns>
         internal McuComResponse ReadAnswer(int expectedSize = 3, int minimumWait = 1)
         {
             var r = new McuComResponse();
@@ -181,14 +180,9 @@ namespace MadeInTheUSB.MCU
                 this.Recorder.AddReceived(buffer.ToList());
                 return r.Initialize(buffer.ToList());
             }
-            else
-                return r.Fail("Timeout");
+            else return r.Fail("Timeout");
         }
 
-        public string ComPort
-        {
-            get { return _mcu.PortName; }
-        }
 
         private string BufferToCode(byte[] buffer)
         {
@@ -207,7 +201,7 @@ namespace MadeInTheUSB.MCU
         {
             this.Recorder.AddSent(buffer.ToList());
             this.AddByte(buffer.Length);
-            _mcu.Send(buffer);
+            this._mcu.Send(buffer);
             //System.Diagnostics.Debug.WriteLine(BufferToCode(buffer));
         }
 

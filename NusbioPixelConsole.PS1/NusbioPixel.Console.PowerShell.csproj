@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AEE342F0-5EAB-4B89-87DD-8A6394064DFF}</ProjectGuid>
+    <ProjectGuid>{F8BEE633-3477-4B25-97AB-DDC34EA11E86}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NusbioMatrixConsole</RootNamespace>
@@ -47,12 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Square4x4.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="NusbioMCU.psm1" />
+    <None Include="NusbioPixel.CommandLine.ps1" />
+    <None Include="NusbioPixel.RainbowDemo.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MadeInTheUSB.MCU.Lib\MadeInTheUSB.MCU.Lib.csproj">
@@ -61,6 +63,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+copy "$(TargetDir)MadeInTheUSB.MCU.Lib.dll" "..\..\"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

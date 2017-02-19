@@ -66,7 +66,7 @@ namespace MadeInTheUSB.Communication
     /// </summary>
     public class McuCom : McuComBaseClass, IDisposable, IMcuCom
     {
-        const int MAX_RESPONSE_BUFFER = 256+4; // 16; FRED
+        const int MAX_RESPONSE_BUFFER = 256+4;
 
         internal SerialPort _serialPort;
 

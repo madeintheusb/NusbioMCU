@@ -1,4 +1,4 @@
-﻿'#Const _300_LEDS = True
+﻿#Const _300_LEDS = True
 '
 '    Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
 '    Copyright (C) 2016 MadeInTheUSB LLC
@@ -486,7 +486,7 @@ Namespace NusbioPixelConsole
 
             nusbioPixel.SetStrip(Color.Green)
             If nusbioPixel.Firmware = Mcu.FirmwareName.NusbioMcu2StripPixels Then
-                nusbioPixel.SetStrip(Color.Green, stripIndex:=NusbioPixel.StripIndex.S1)
+                nusbioPixel.SetStrip(Color.Green, NusbioPixel.StripIndex.S1)
             End If
 
             Cls(nusbioPixel)
