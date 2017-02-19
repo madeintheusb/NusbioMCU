@@ -1,7 +1,7 @@
 ﻿<#
 	NusbioMCU Demo Using PowerShell
 
-    Copyright (C) 2015 MadeInTheUSB.net
+    Copyright (C) 2015,2017 MadeInTheUSB.net
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
     associated documentation files (the "Software"), to deal in the Software without restriction, 
@@ -32,7 +32,6 @@ if($action.ToLowerInvariant() -eq "sourcecode")
 }
 
 Import-Module ".\NusbioMCU.psm1" -Force
-
 
 function RainbowDemo([MadeInTheUSB.MCU.NusbioPixel] $nusbioPixel) {
     
@@ -85,17 +84,13 @@ function RainbowDemo([MadeInTheUSB.MCU.NusbioPixel] $nusbioPixel) {
     }
 }
 
-
 $MAX_LED = 30
 
 pUsing ($nusbioPixel = [MadeInTheUSB.MCU.NusbioPixel]::ConnectToMCU($null, $MAX_LED)) {
-
         
     RainbowDemo $nusbioPixel
 }
-           
 
 
-#$error[0]|format-list -force
 Write-Host "Done"
 

@@ -1,7 +1,7 @@
 ﻿<#
-	Nusbio Library For PowerShell
+	NusbioMCU Library For PowerShell
 
-    Copyright (C) 2015 MadeInTheUSB.net
+    Copyright (C) 2015,2017 MadeInTheUSB.net
     Written by FT for MadeInTheUSB.net
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
@@ -22,8 +22,6 @@
  #>
  
 $MadeInTheUSB_NusbioMCU_Lib_dll  = "MadeInTheUSB.MCU.Lib.dll"
-
-
 
 function pUsing {
     param (
@@ -58,7 +56,6 @@ function Nusbio_CheckVersion() {
         Exit 1
     }
 }
-
 
 function NusbioMCU_Help() {
     Cls
@@ -99,8 +96,6 @@ catch [System.Exception] {
         Write-Host $ex.ToString()
     }
 }
-
-
 
 # Create variable to manipulate C# Enum type from the library
 #$Gpio0 = [MadeInTheUSB.NusbioGpio]::Gpio0

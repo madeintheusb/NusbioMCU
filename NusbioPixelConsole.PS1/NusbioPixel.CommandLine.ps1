@@ -1,7 +1,7 @@
 ﻿<#
 	NusbioMCU Demo Using PowerShell
 
-    Copyright (C) 2015 MadeInTheUSB.net
+    Copyright (C) 2015,2017 MadeInTheUSB.net
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
     associated documentation files (the "Software"), to deal in the Software without restriction, 
@@ -19,7 +19,6 @@
     OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #>
  
-
 cls
 
 Import-Module ".\NusbioMCU.psm1" -Force
@@ -31,22 +30,17 @@ $r = $nusbioPixel.SetStrip([System.Drawing.Color]::Black)
 $color = [System.Drawing.Color]::DarkOliveGreen
 $r = $nusbioPixel.SetPixel([int]0, [System.Drawing.Color]$color)
 $r = $nusbioPixel.SetPixel([System.Drawing.Color]$color)
+
 for($i = 0; $i -lt $nusbioPixel.Count-1; $i++) { $r = $nusbioPixel.SetPixel([System.Drawing.Color]$color) }
+
 $r = $nusbioPixel.Show()
 
 $r = $nusbioPixel.Dispose()
-           
-#$error[0]|format-list -force
-Write-Host "Done"
-
-
-
-
 
 
 <#
-$color = [System.Drawing.Color]::DarkCyan
-$color = [System.Drawing.Color]::Crimson
-$color = [System.Drawing.Color]::DarkOrange
-$color = [System.Drawing.Color]::DarkOliveGreen
+	$color = [System.Drawing.Color]::DarkCyan
+	$color = [System.Drawing.Color]::Crimson
+	$color = [System.Drawing.Color]::DarkOrange
+	$color = [System.Drawing.Color]::DarkOliveGreen
 #>
