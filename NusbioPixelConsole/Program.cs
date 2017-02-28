@@ -1,7 +1,7 @@
 ﻿#define _300_LEDS
 /*
     Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
-    Copyright (C) 2016 MadeInTheUSB LLC
+    Copyright (C) 2016,2017 MadeInTheUSB LLC
     Written by FT
     
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
@@ -241,7 +241,6 @@ namespace NusbioMatrixConsole
 
         private static double Interpolate(double d1, double d2, double fraction)
         {
-            //return d1 + (d1 - d2) * fraction;
             return d1 + (d2 - d1) * fraction;
         }
 
@@ -251,12 +250,10 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(0, "Rainbow Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
-            long maxShowPerformance = 0;
-            long minShowPerformance = long.MaxValue;
-            var quit                = false;
-            int speed               = 10;
-            var jWheelColorStep     = 4;
-            var brightness          = 190; // This is for NusbioMCUpixel, will automatically reduced for NusbioMCU
+            var quit                  = false;
+            int speed                 = 0;
+            var jWheelColorStep       = 4;
+            var brightness            = 255; // This is for NusbioMCUpixel, will automatically reduced for NusbioMCU
 
             nusbioPixel.SetBrightness(brightness);
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
@@ -265,19 +262,16 @@ namespace NusbioMatrixConsole
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                 speed /= 2;
 
-            if (nusbioPixel.Count > 100)
-                speed = 0;
-
             while (!quit)
             {
                 for (var jWheelColorIndex = 0; jWheelColorIndex < 256; jWheelColorIndex += jWheelColorStep)
                 {
                     ConsoleEx.WriteLine(0, 2, string.Format("jWheelColorIndex:{0:000}, jWheelColorStep:{1:00}", jWheelColorIndex, jWheelColorStep), ConsoleColor.White);
-                    var sw      = Stopwatch.StartNew();
+                    var sw = Stopwatch.StartNew();
 
                     for (var pixelIndex = 0; pixelIndex < nusbioPixel.Count; pixelIndex++)
                     {
-                        var color = Color.Beige;
+                        var color       = Color.Beige;
 
                         if (rainbowEffect == RainbowEffect.AllStrip)
                             color = RGBHelper.Wheel((jWheelColorIndex) & 255);
@@ -285,16 +279,16 @@ namespace NusbioMatrixConsole
                             color = RGBHelper.Wheel((pixelIndex * 256 / nusbioPixel.Count) + jWheelColorIndex);
 
                         if(pixelIndex == 0) // Setting the pixel this way, will support more than 255 LED
-                            nusbioPixel.SetPixel(pixelIndex, color.R, color.G, color.B); // Set led index to 0
+                            nusbioPixel.SetPixel(pixelIndex, color); // Set led index to 0
                         else
-                            nusbioPixel.SetPixel(color.R, color.G, color.B); // Set led index to 0
+                            nusbioPixel.SetPixel(color); // Set led index to 0
 
                         if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && nusbioPixel.Count <= 120)
                         {
                             if (pixelIndex == 0)// Setting the pixel this way, will support more than 255 LED
-                                nusbioPixel.SetPixel(pixelIndex, color.R, color.G, color.B, NusbioPixel.StripIndex.S1); // Set led index to 0
+                                nusbioPixel.SetPixel(pixelIndex, color, NusbioPixel.StripIndex.S1); // Set led index to 0
                             else
-                                nusbioPixel.SetPixel(color.R, color.G, color.B, NusbioPixel.StripIndex.S1);
+                                nusbioPixel.SetPixel(color, NusbioPixel.StripIndex.S1);
                         }
 
                         if (nusbioPixel.Count <= 120)
@@ -303,99 +297,23 @@ namespace NusbioMatrixConsole
                             Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", pixelIndex, color.R, color.G, color.B); // , ToHexValue(color) html value
                         }
                     }
-                    //sw.Stop();
-                    //ConsoleEx.Write(0, 22, string.Format("SetPixel() Time:{0:000}ms, {1}", sw.ElapsedMilliseconds, nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
-                    //sw = Stopwatch.StartNew();
+
                     nusbioPixel.Show();
                     if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                         nusbioPixel.Show(NusbioPixel.StripIndex.S1);
                     sw.Stop();
-                    
-                    if (sw.ElapsedMilliseconds < minShowPerformance) minShowPerformance = sw.ElapsedMilliseconds;
-                    if (sw.ElapsedMilliseconds > maxShowPerformance) maxShowPerformance = sw.ElapsedMilliseconds;
 
                     ConsoleEx.Write(0, 23, string.Format("SetPixel()/Show() {0}", nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
                     
-
                     if (speed > 0)
                         Thread.Sleep(speed);
                     CheckKeyboard(ref quit, ref speed);
-                    if (quit)
+                    if (quit)   
                         break;
                 }
             }
         }
 
-        private static void RingDemo(NusbioPixel nusbioPixel, int deviceIndex = 0)
-        {
-            Console.Clear();
-            ConsoleEx.TitleBar(0, "Rainbow Demo");
-            ConsoleEx.WriteMenu(-1, 6, "Q)uit");
-            int speed = 0;
-            var quit  = false;
-            var jStep = 4;
-
-            nusbioPixel.SetBrightness(24);
-
-            while (!quit)
-            {
-                for (jStep = 2; jStep < 24; jStep += 2)
-                {
-                    ConsoleEx.WriteLine(0, 2, string.Format("jStep:{0:000}", jStep), ConsoleColor.White);
-
-                    for (var j = 0; j < 256; j += jStep)
-                    {
-                        for (var i = 0; i < nusbioPixel.Count; i++)
-                        {
-                            var color = RGBHelper.Wheel((i * 256 / nusbioPixel.Count) + j);
-                            if (i == 0)
-                                nusbioPixel.SetPixel(i, color.R, color.G, color.B);
-                            else
-                                nusbioPixel.SetPixel(color.R, color.G, color.B);
-
-                            //Console.Write("[{0:000}]rgb:{1:000},{2:000},{3:000}  html:{4} ", i, color.R, color.G, color.B, ToHexValue(color));
-                            //if (i%2 != 0) Console.WriteLine();
-                        }
-                        nusbioPixel.Show();
-                        speed = jStep / 2;
-                        if (speed > 0)
-                            Thread.Sleep(speed);
-                        CheckKeyboard(ref quit, ref speed);
-                        if (quit)
-                            break;
-                    }
-                }
-
-
-                for (jStep = 24; jStep > 2; jStep -= 2)
-                {
-                    ConsoleEx.WriteLine(0, 2, string.Format("jStep:{0:000}", jStep), ConsoleColor.White);
-
-                    for (var j = 256; j > 0; j -= jStep)
-                    {
-                        for (var i = 0; i < nusbioPixel.Count; i++)
-                        {
-                            var color = RGBHelper.Wheel((i * 256 / nusbioPixel.Count) + j);
-                            if (i == 0)
-                                nusbioPixel.SetPixel(i, color.R, color.G, color.B);
-                            else
-                                nusbioPixel.SetPixel(color.R, color.G, color.B);
-
-                            //Console.Write("[{0:000}]rgb:{1:000},{2:000},{3:000}  html:{4} ", i, r.R, r.G, r.B, ToHexValue(r));
-                            //if (i%2 != 0) Console.WriteLine();
-                        }
-                        nusbioPixel.Show();
-                        speed = jStep / 2;
-                        if (speed > 0)
-                            Thread.Sleep(speed);
-                        CheckKeyboard(ref quit, ref speed);
-                        if (quit)
-                            break;
-                    }
-                }
-                ConsoleEx.WriteMenu(0, 4, nusbioPixel.GetByteSecondSentStatus(true));
-            }
-        }
 
         static NusbioPixelDeviceType AskUserForPixelType()
         {

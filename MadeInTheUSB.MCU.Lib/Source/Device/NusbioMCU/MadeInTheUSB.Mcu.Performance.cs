@@ -1,7 +1,7 @@
 ﻿/*
     NusbioMatrix/NusbioPixel devices for Windows/.NET
     MadeInTheUSB MCU ATMega328 Based Device
-    Copyright (C) 2016 MadeInTheUSB LLC 
+    Copyright (C) 2016,2017 MadeInTheUSB LLC 
 
     MIT license, all text above must be included in any redistribution
 
@@ -56,7 +56,7 @@ namespace MadeInTheUSB.MCU
         public string GetByteSecondSentStatus(bool reset = false)
         {
             var s = string.Format(
-                "{0:00.000} KByte/S, {1:0000} Bytes, {2:000.00} ms    ",
+                "{0:00.0} KByte/S, {1:0000} Bytes, {2:00.0} ms    ",
                 this.GetKByteSecondSent(),
                 this._bytePerSecondByteCount,
                 this._bytePerSecondDuration.TotalMilliseconds

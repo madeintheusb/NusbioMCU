@@ -1,6 +1,6 @@
 ﻿/*
     Demo application for the NusbioMCU and 1 or 4 8x8 LED Matrix.
-    Copyright (C) 2016 MadeInTheUSB LLC
+    Copyright (C) 2016,2017 MadeInTheUSB LLC
     Written by FT
     
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
@@ -205,7 +205,7 @@ namespace NusbioMatrixConsole
         {
             var quit = false;
             var speed = nusbioMatrix.MatrixCount == 1 ? 80 : 40;
-            speed = 5;
+
             var animations = new List<CircleA>();
 
             for (var d = 0; d < nusbioMatrix.MatrixCount; d++)

@@ -4,7 +4,7 @@
     This file is a version of Adafruit C++ Adafruit-GFX-Library 
     ported to C# for the Nusbio device and for the NusbioMCU device 
     by FT for MadeInTheUSB.
-    Copyright (c) 2016 MadeInTheUSB LLC
+    Copyright (C) 2016,2017 MadeInTheUSB LLC
     Copyright (c) 2013 Adafruit Industries.  All rights reserved.
 
     MIT license, all text above must be included in any redistribution

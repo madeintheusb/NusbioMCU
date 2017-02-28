@@ -315,6 +315,15 @@ namespace MadeInTheUSB.Components
             return WheelByte((byte)(b & 255));
         }
 
+        private static Color FromRgb(int r, int g, int b)
+        {
+            if(b < 0)
+            {
+                int a = 1;
+            }
+            return Color.FromArgb(0, r, g, b);
+        }
+
         // Based on ADAFRUIT strandtes.ino for NeoPixel
         // Input a value 0 to 255 to get a color value.
         // The colours are a transition r - g - b - back to r.
@@ -322,17 +331,17 @@ namespace MadeInTheUSB.Components
         {
             if (wheelPos < 85)
             {
-                return Color.FromArgb(0, wheelPos*3, 255 - wheelPos*3, 0);
+                return FromRgb(wheelPos*3, 255 - wheelPos*3, 0);
             }
             else if (wheelPos < 170)
             {
                 wheelPos -= 85;
-                return Color.FromArgb(0, 255 - wheelPos*3, 0, wheelPos*3);
+                return FromRgb(255 - wheelPos*3, 0, wheelPos*3);
             }
             else
             {
                 wheelPos -= 170;
-                return Color.FromArgb(0, 0, wheelPos*3, 255 - wheelPos*3);
+                return FromRgb(0, wheelPos*3, 255 - wheelPos*3);
             }
         }
 

@@ -1,7 +1,7 @@
 /*
     NusbioMatrix/NusbioPixel devices for Windows/.NET
     MadeInTheUSB MCU ATMega328 Based Device
-    Copyright (C) 2016 MadeInTheUSB LLC 
+    Copyright (C) 2016,2017 MadeInTheUSB LLC 
 
     MIT license, all text above must be included in any redistribution
 

@@ -2,7 +2,7 @@
     Demo application for the NusbioMatrix MCU based.
     Support 1, 4, 8 Matrix.
 
-    Copyright (C) 2016 MadeInTheUSB LLC
+    Copyright (C) 2016,2017 MadeInTheUSB LLC
     Written by FT
     
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
@@ -289,7 +289,7 @@ namespace NusbioMatrixConsole
                     NusbioMatrix.AllGpios.ForEach(p => nusbioMCU.DigitalWrite(p, true));
                     testName = "All high";
                     adcState = GetAllADCState(nusbioMCU);
-                    passed = adcState == "1004,1004,1004,1003,"; // This may change based on the resistor
+                    passed = adcState == "1003,1002,1002,1002,"; // This may change based on the resistor
                     ConsoleEx.WriteLine(0, 4, string.Format("{0} [{1}] '{2}'", testName, passed ? "PASSED" : "FAILED", adcState), passed ? ConsoleColor.Green : ConsoleColor.Red);
 
                     CheckKeyboard(ref quit, ref speed, nusbioMCU);

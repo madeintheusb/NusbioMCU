@@ -1,7 +1,7 @@
 ﻿/*
     NusbioMatrix/NusbioPixel devices for Windows/.NET
     MadeInTheUSB MCU ATMega328 Based Device
-    Copyright (C) 2016 MadeInTheUSB LLC 
+    Copyright (C) 2016,2017 MadeInTheUSB LLC 
 
     MIT license, all text above must be included in any redistribution
 
@@ -92,7 +92,7 @@ namespace MadeInTheUSB.MCU
             
             int reTry = 5;
             int tryCounter = 0;
-            int waitTime = 500;
+            int waitTime   = 500;
             while (tryCounter < reTry)
             {
                 var comPort = __DetectMcuComPort(expectedFirmwares2.ToList());
@@ -100,7 +100,7 @@ namespace MadeInTheUSB.MCU
                     return comPort;
                 tryCounter++;
                 Thread.Sleep(waitTime);
-                waitTime += 600;
+                waitTime += 750;
             }
             return null;
         }

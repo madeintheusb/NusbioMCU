@@ -1,6 +1,6 @@
 ﻿/*
     NusbioFirmwareLoader
-    Copyright (C) 2016 MadeInTheUSB LLC
+    Copyright (C) 2016,2017 MadeInTheUSB LLC
     Written by FT
     
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
