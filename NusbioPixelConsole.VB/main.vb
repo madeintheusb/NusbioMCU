@@ -1,4 +1,4 @@
-﻿#Const _300_LEDS = True
+﻿#Const _300_LEDS = False
 '
 '    Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
 '    Copyright (C) 2016 MadeInTheUSB LLC
