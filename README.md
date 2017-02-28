@@ -17,8 +17,9 @@ up to 180 RGB LED per strip.
 ### Facts
 
 * Everything is plug and play
-* All .NET source is written in C# and is open-source
-* C#, VB.NET and PowerShell source available
+* All .NET code is open-source
+* Main library is written in C#
+* Samples available in C#, VB.NET and PowerShell 
 
 # Links
 
