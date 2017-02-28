@@ -1,18 +1,21 @@
-# NusbioMatrix MCU
+# NusbioMCU and NubsioMCUpixels
 
 ## Overview
 
- NubsioMCU is a .NET programmable Micro-Controller to
+**NubsioMCU** is a .NET programmable Micro-Controller to control different shapes of multi-color (RGB) LED of type WS2812 (up to 60 LED).
 
-    Control different shape of multi-color LED (RGB) of type WS2812
-    Control 8x8 LED Matrix
+**NubsioMCUpixels** is a .NET programmable Micro-Controller to control 2 independent strips of RGB LED of type WS2812,
+up to 180 RGB LED per strip.
 
-Facts
+ Requires a 5 Volts 2 Amp external power adapter with Micro USB male plug.
 
-    Everything is plug and play
-    All .NET source is written in C# and is open-source
 
-Links
+### Facts
+
+* Everything is plug and play
+* All .NET source is written in C# and is open-source
+
+# Links
 
     Drivers:
         Windows 10 - Auto detection 
@@ -20,17 +23,13 @@ Links
         Windows 7 - NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link
         http://madeintheusb.net/Drivers/NusbioMCU.CH341SER.CH340.Driver.zip
 
-http://www.MadeInTheUSB.net/NusbioMCU
-
-## License
-
 # Copyright
 
 http://www.MadeInTheUSB.net
 
 Copyright (C) 2015, 2016 MadeInTheUSB LLC
 
-# License 
+## .NET source code License - MIT License
 
     All .NET samples and components classes are released under the MIT License.
 
