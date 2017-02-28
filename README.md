@@ -2,11 +2,11 @@
 
 ## Overview
 
-**NubsioMCU** is a .NET programmable Micro-Controller to control different shapes of multi-color (RGB) LED of type WS2812 (up to 60 LED).
+**NubsioMCU** is a ***.NET*** programmable Micro-Controller to control different shapes of multi-color (RGB) LED of type WS2812 (up to 60 LED).
 
 ![](http://madeintheusb.net/Images/NusbioMCU/NusbioMCU_Strip.jpg)
 
-**NubsioMCUpixels** is a .NET programmable Micro-Controller to control 2 independent strips of RGB LED of type WS2812,
+**NubsioMCUpixels** is a ***.NET*** programmable Micro-Controller to control 2 independent strips of RGB LED of type WS2812,
 up to 180 RGB LED per strip.
 
  Requires a 5 Volts 2 Amp external power adapter with Micro USB male plug.
@@ -18,12 +18,13 @@ up to 180 RGB LED per strip.
 
 * Everything is plug and play
 * All .NET source is written in C# and is open-source
+* C#, VB.NET and PowerShell source available
 
 # Links
 
     Drivers:
         Windows 10 - Auto detection 
-            See video https://www.youtube.com/watch?v=tqPd-hfGUjQ&feature=youtu.be
+            [Video](https://www.youtube.com/watch?v=tqPd-hfGUjQ&feature=youtu.be)
         Windows 7 - NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link
         http://madeintheusb.net/Drivers/NusbioMCU.CH341SER.CH340.Driver.zip
 
