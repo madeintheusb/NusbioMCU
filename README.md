@@ -23,7 +23,7 @@ up to 180 RGB LED per strip.
 
 # Links
 
-* Web Site [www.NusbioMCU.com](https://www.madeintheusb.net/nusbiomcu)
+* Web Site [www.NusbioMCU.com](http://www.madeintheusb.net/nusbiomcu)
 
 * Drivers:
         Windows 10 - Auto detection 
@@ -33,9 +33,7 @@ up to 180 RGB LED per strip.
 
 # Copyright
 
-http://www.MadeInTheUSB.net
-
-Copyright (C) 2015, 2016 MadeInTheUSB LLC
+    Copyright (C) 2016, 2017 MadeInTheUSB LLC
 
 ## .NET source code License - MIT License
 
