@@ -1,4 +1,4 @@
-﻿#define _300_LEDS
+﻿//#define _300_LEDS
 /*
     Demo application for the NusbioMCU and Multi-Color LED (RGB, WS2812)
     Copyright (C) 2016,2017 MadeInTheUSB LLC
@@ -283,7 +283,7 @@ namespace NusbioMatrixConsole
                         else
                             nusbioPixel.SetPixel(color); // Set led index to 0
 
-                        if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && nusbioPixel.Count <= 120)
+                        if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && nusbioPixel.Count <= NusbioPixel.NUSBIO_PIXELS_MCU_MAX_LED)
                         {
                             if (pixelIndex == 0)// Setting the pixel this way, will support more than 255 LED
                                 nusbioPixel.SetPixel(pixelIndex, color, NusbioPixel.StripIndex.S1); // Set led index to 0
@@ -319,12 +319,12 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
-            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12";
+            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80";
             #if _300_LEDS
             m += " 3 H)undred";
             #endif
             var pixelTypeChar = ConsoleEx.Question(1, 
-                m , new List<char>() {'3', '6', 'S', 'R'
+                m , new List<char>() {'3', '6', 'S', 'R', '1'
                         #if _300_LEDS
                         , 'H'
                         #endif
@@ -336,6 +336,7 @@ namespace NusbioMatrixConsole
                 case 'S': return NusbioPixelDeviceType.Square16;
                 case 'R': return NusbioPixelDeviceType.Ring12;
                 case 'H': return NusbioPixelDeviceType.Strip300;
+                case '1': return NusbioPixelDeviceType.Strip180;
             }
             return NusbioPixelDeviceType.Unknown;
         }

@@ -43,6 +43,7 @@ namespace MadeInTheUSB.MCU
         Ring12   = 12,
         Square16 = 16,
         Strip300 = 300,
+        Strip180 = 180,
     }
 
     public partial class NusbioPixel : NusbioMCU, IDisposable
@@ -56,6 +57,9 @@ namespace MadeInTheUSB.MCU
 
         public const int MAX_BRIGHTNESS_EXTERNAL_POWER   = 250;
 
+        public const int NUSBIO_MCU_MAX_LED = 60;
+        public const int NUSBIO_PIXELS_MCU_MAX_LED = 180;
+                
         public enum StripIndex
         {
             S0 = 1,
@@ -149,7 +153,7 @@ namespace MadeInTheUSB.MCU
             var r = base.Initialize(firmwareNames);
             if (r.Succeeded)
             {
-                if(this.SetBrightness(DEFAULT_BRIGHTNESS).Succeeded)
+                if(this.SetBrightness(DEFAULT_BRIGHTNESS).Succeeded) 
                     if (this.SetLedCount(this.Count).Succeeded)
                         return r;
             }
@@ -218,6 +222,12 @@ namespace MadeInTheUSB.MCU
         public McuComResponse SetLedCount(int count, StripIndex stripIndex = StripIndex.S0)
         {
             this.Count = count;
+
+            if (this.Firmware == Mcu.FirmwareName.NusbioMcuMatrixPixel && count > NUSBIO_MCU_MAX_LED)
+                count = NUSBIO_MCU_MAX_LED;
+            if (this.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && count > NUSBIO_PIXELS_MCU_MAX_LED)
+                count = NUSBIO_PIXELS_MCU_MAX_LED;
+
             var rr = new McuComResponse();
             return McuComResponse.Success;
 
@@ -237,7 +247,7 @@ namespace MadeInTheUSB.MCU
 
         public McuComResponse Show(
             StripIndex stripIndex = StripIndex.S0,
-            int minimumWait = 10 // By experimentation it taked between 15 to 30ms to execute the api call with a 60 LED strip
+            int minimumWait = 16 // By experimentation it taked between 15 to 30ms to execute the api call with a 60 LED strip
             )
         {
             Send(HandleStripIndex(Mcu.McuCommand.CP_RGB_PIXEL_DRAW, stripIndex), 0);
@@ -384,3 +394,6 @@ namespace MadeInTheUSB.MCU
         }
     }
 }
+
+
+
