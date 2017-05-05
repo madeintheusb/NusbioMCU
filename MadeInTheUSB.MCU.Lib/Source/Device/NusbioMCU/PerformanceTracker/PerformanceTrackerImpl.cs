@@ -34,7 +34,7 @@ using System.Diagnostics;
 
 namespace MadeInTheUSB.MCU
 {
-    public partial class NusbioMCU 
+    public partial class PerformanceTrackerImpl : IPerformanceTracker
     {
         private DateTime    _bytePerSecondStartTime;
         private TimeSpan    _bytePerSecondDuration;

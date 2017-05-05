@@ -118,9 +118,9 @@ namespace MadeInTheUSB.MCU
         //    GpioPin.Gpio7
         //};
 
-        public static List<GpioPin> PwmGpioPins = new List<GpioPin>() {
-            GpioPin.Gpio5,
-            GpioPin.Gpio6,
+        public static List<GpioPwmPin> PwmGpioPins = new List<GpioPwmPin>() {
+            GpioPwmPin.Gpio5,
+            GpioPwmPin.Gpio6,
         };
 
         public enum AdcPin

@@ -38,7 +38,7 @@ namespace MadeInTheUSB.MCU
         USB = 1,
         EXTERNAL = 2
     }
-    public partial class NusbioMCU
+    public partial class NusbioMCU : IPerformanceTracker
     {
         /// <summary>
         /// Default serial communication speed
@@ -48,6 +48,8 @@ namespace MadeInTheUSB.MCU
         protected McuCom    _mcu;
         protected string    _comPort;
         protected int       _baud;
+
+        private IPerformanceTracker _performanceTracker = new PerformanceTrackerImpl();
 
         private const string ERR_MSG_1000 = "ERR1000-Invalid answer from MCU";
 
@@ -341,6 +343,21 @@ namespace MadeInTheUSB.MCU
                 return firmwareName;
             }
             return Mcu.FirmwareName.Unknown;
+        }
+
+        public void AddByte(long byteCount)
+        {
+            _performanceTracker.AddByte(byteCount);
+        }
+
+        public string GetByteSecondSentStatus(bool reset = false)
+        {
+            return _performanceTracker.GetByteSecondSentStatus(reset);
+        }
+
+        public void ResetBytePerSecondCounters()
+        {
+            _performanceTracker.ResetBytePerSecondCounters();
         }
     }
 }

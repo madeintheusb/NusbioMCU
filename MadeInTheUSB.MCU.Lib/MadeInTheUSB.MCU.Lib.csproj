@@ -54,13 +54,14 @@
     <Compile Include="Source\Device\NusbioMatrix\Nusbio_GFX.cs" />
     <Compile Include="Source\Device\NusbioMCU\Analog\AnalogLightSensor.cs" />
     <Compile Include="Source\Device\NusbioMCU\Analog\AnalogSensor.cs" />
+    <Compile Include="Source\Device\NusbioMCU\PerformanceTracker\IPerformanceTracker.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.ArduinoFirmwareUploader.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.Enum.cs" />
     <Compile Include="Source\Device\NotUsed\NusbioMatrix.Char.v0.cs" />
+    <Compile Include="Source\Device\NusbioMCU\PerformanceTracker\PerformanceTrackerImpl.cs" />
     <Compile Include="Source\Device\NusbioMCU\NusbioMCUProtocolRecorder.cs" />
     <Compile Include="Source\Device\Utility\NusbioLandscapeMatrix.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.cs" />
-    <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.Performance.cs" />
     <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Scroll.cs" />
     <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Char.cs" />
     <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.cs" />

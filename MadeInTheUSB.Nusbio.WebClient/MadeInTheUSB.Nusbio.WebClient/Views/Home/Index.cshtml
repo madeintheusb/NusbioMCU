@@ -142,17 +142,18 @@
     var HOST               = "localhost";
     var HOST_PORT          = 80;
     var MAX_LED            = 30;
-    var RAINBOW_TIME_OUT   = 100;
+    var RAINBOW_TIME_OUT   = 500;
     var HOST_PORT          = 55977;
     var nusbio             = null;
     var scriptTimerId      = null;
     var rainbowDemoTimerId = null;
     var someColorsIndex    = 0;
     var jWheelColorIndex   = 0
-    var jWheelColorStep    = 8;
-    var someColors         = ["C74816", "C7A426", "B7C75C", "63C762", "18C72C", "20C7C4", "41849E",
-                              "366D82", "2B5869", "20424F", "142830", "040824", "091252", "0E1B7D",
-                              "1223A1", "172DD1", "4415D1", "8315D1", "D12AC3", "D14383", "D11758",
+    var jWheelColorStep = 8;
+
+    var someColors         = ["63C762", "18C72C", "20C7C4", "41849E",
+                              "366D82", "091252", "0E1B7D",
+                              "4415D1", "8315D1", "D12AC3", "D14383", "D11758",
                               "D10F12"];
     
     function resetColor() {
@@ -194,20 +195,13 @@
     function rainbowDemo_callBack() {
 
         var l = [];
-
         for (var pixelIndex = 0; pixelIndex < nusbio.Count; pixelIndex++) {
-
-            var wx = Math.floor((pixelIndex * 256 / nusbio.Count) + jWheelColorIndex);
-            l.push(wx);
-            // l.push(nusbio.wheel(wx)); // wheel function is buggy
+            l.push(Math.floor((pixelIndex * 256 / nusbio.Count) + jWheelColorIndex));
         }
         jWheelColorIndex += jWheelColorStep;
         if (jWheelColorIndex >= 256)
             jWheelColorIndex = 0;
         var csvColors = l.join(",");
-
-        // alert(csvColors); // Alert box is needed to debug the C# code to avoid re entrant call
-
         nusbio.setPixels(csvColors);
     }
     function setScriptState(running) {
@@ -277,7 +271,7 @@
                 "function setNextColor() { return setStripColor(getNextColor()); }\r" +
                 "scriptTimerId = setInterval(function() {  \r" +
                 "    setNextColor()\r" +
-                "}, 500);\r";
+                "}, 1500);\r";
 
             $("#jsScript").val(jsScriptDemo);
         });

@@ -265,9 +265,10 @@ namespace NusbioMatrixConsole
             {
                 Console.Clear();
                 ConsoleEx.TitleBar(0, "Analog Ports Test With Nusbio Test Extension");
-                ConsoleEx.WriteMenu(-1, 6, "Q)uit");
+                ConsoleEx.WriteMenu(-1, 8, "Q)uit");
                 var quit = false;
                 int speed = 0;
+                var wait = 100;
 
                 nusbioMCU.SetOnBoardLed(NusbioMCU.OnBoardLedMode.On);
 
@@ -283,26 +284,55 @@ namespace NusbioMatrixConsole
                     var passed = adcState == "0,0,0,0,";
                     ConsoleEx.WriteLine(0, 3, string.Format("{0} [{1}] '{2}'", testName, passed ? "PASSED" : "FAILED", adcState), passed ? ConsoleColor.Green : ConsoleColor.Red);
 
-                    Thread.Sleep(500);
+                    if(wait>0) Thread.Sleep(wait);
 
                     // Turn the 4 gpio high which are connected to the 4 ADC
                     NusbioMatrix.AllGpios.ForEach(p => nusbioMCU.DigitalWrite(p, true));
                     testName = "All high";
                     adcState = GetAllADCState(nusbioMCU);
-                    passed = adcState == "1003,1002,1002,1002,"; // This may change based on the resistor
-                    ConsoleEx.WriteLine(0, 4, string.Format("{0} [{1}] '{2}'", testName, passed ? "PASSED" : "FAILED", adcState), passed ? ConsoleColor.Green : ConsoleColor.Red);
+                    passed   = ValidateADCState(adcState, 1000, 6);
+                    ConsoleEx.WriteLine(0, 4, string.Format("{0} Actual:'{1}'", testName, passed ? "PASSED" : "FAILED", adcState), passed ? ConsoleColor.Green : ConsoleColor.Red);
 
+                    NusbioMatrix.AllGpios.ForEach(p => nusbioMCU.DigitalWrite(p, false));
+
+                    // Note that PWM cannot guaranty a value in the ADC it could a 0 or a ~5Volt
+                    for (var pwmVal = 0; pwmVal < 255; pwmVal += 10)
+                    {
+                        Mcu.PwmGpioPins.ForEach(pw => nusbioMCU.AnalogWrite(pw, pwmVal));
+                        Thread.Sleep(1);
+                        passed   = true;
+                        adcState = GetAllADCState(nusbioMCU);
+                        ConsoleEx.WriteLine(0, 5, string.Format("{0} pwm:{1} adcState:{2}", 
+                            testName, pwmVal, adcState.PadRight(32)), passed ? ConsoleColor.Green : ConsoleColor.Red);
+                        Thread.Sleep(wait);
+                    }
+                    nusbioMCU.AnalogWrite(Mcu.GpioPwmPin.Gpio5, 0);
                     CheckKeyboard(ref quit, ref speed, nusbioMCU);
 
-                    Thread.Sleep(500);
+                    if (wait > 0) Thread.Sleep(wait);
                 }
             }
             finally
             {
+                NusbioMatrix.AllGpios.ForEach(p => nusbioMCU.DigitalWrite(p, false));
                 nusbioMCU.SetOnBoardLed(NusbioMCU.OnBoardLedMode.Connected);
             }
         }
 
+        private static bool ValidateADCState(string csvString, int expectedValue = 1000, int range = 1)
+        {
+            var vals = csvString.Split(',');
+            foreach(var v in vals)
+            {
+                if (!string.IsNullOrEmpty(v.Trim()))
+                {
+                    var iv = int.Parse(v);
+                    if (!((iv >= expectedValue - range) && (iv <= expectedValue + range)))
+                        return false;
+                }
+            }
+            return true;
+        }
 
         static void Main(string[] args)
         {

@@ -48,7 +48,7 @@ namespace MadeInTheUSB.NusbioDevice.WebClient.Controllers
     {
         private static MadeInTheUSB.MCU.NusbioPixel _nusbioPixel;
 
-        private const int MAX_LED = 30;
+        private const int MAX_LED = 12;
 
         public static bool InitNusbioDevice()
         {
