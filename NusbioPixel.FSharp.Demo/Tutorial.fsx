@@ -1,5 +1,5 @@
 ﻿//
-// Turning on and off LEDs with Nusbio and F#
+// RGB LEDs with NusbioMCU and F#
 //
 open System
 open System.Threading
@@ -10,13 +10,13 @@ open MadeInTheUSB.MCU
 open MadeInTheUSB.Components
 
 module NusbioMCUInteractive = 
-    let maxLed = 12
+    let maxLed = 30
     let nusbioPixel = MadeInTheUSB.MCU.NusbioPixel.ConnectToMCU(null, maxLed);
     nusbioPixel.SetStrip(System.Drawing.Color.Black);
     
     let b = System.Drawing.Color.Blue;
-    nusbioPixel.SetPixel(0, b);
-    [1..29] |> List.iter(fun(x) -> nusbioPixel.SetPixel(x, b) |> ignore);
+    nusbioPixel.SetPixel(0, b)  |> ignore;
+    [1..maxLed] |> List.iter(fun(x) -> nusbioPixel.SetPixel(x, b) |> ignore);
     nusbioPixel.Show();
 
     // Based on ADAFRUIT strandtes.ino for NeoPixel
@@ -29,12 +29,10 @@ module NusbioMCUInteractive =
         else 
             let wheelPos2 = wheelPos - 170;
             System.Drawing.Color.FromArgb(0, 0, wheelPos2*3, 255 - wheelPos2*3);
+    
 
-
-    //let color = WheelByte((int (byte jWheelColorIndex))); 
-
-    [0..10] |> List.iter(fun(count) ->
-        [0..8..256] |> List.iter(fun(jWheelColorIndex) ->
+    [0..30] |> List.iter(fun(count) ->
+        [0..4..256] |> List.iter(fun(jWheelColorIndex) ->
             System.Console.WriteLine("jWheelColorIndex:{0} ", jWheelColorIndex);
             [0..nusbioPixel.Count] |> List.iter(fun(pixelIndex) -> 
                 
@@ -45,7 +43,16 @@ module NusbioMCUInteractive =
                     nusbioPixel.SetPixel(color) |> ignore;
             )         
             nusbioPixel.Show() |> ignore;
+            nusbioPixel.Wait(10) |> ignore;
         )
     )
 
+
+
     nusbioPixel.Dispose();
+    
+
+
+
+
+    //let color = WheelByte((int (byte jWheelColorIndex))); 
