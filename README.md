@@ -6,8 +6,7 @@
 
 ![](http://madeintheusb.net/Images/NusbioMCU/NusbioMCU_Strip.jpg)
 
-**NubsioMCUpixels** is a ***.NET*** programmable Micro-Controller to control 2 independent strips of RGB LED of type WS2812,
-up to 180 RGB LED per strip.
+**NubsioMCUpixels** is a ***.NET*** programmable Micro-Controller to control 2 independent strips of RGB LED of type WS2812,up to 180 RGB LED per strip.  [www.NusbioMCU.com](http://madeintheusbwebsite.azurewebsites.net/nusbiomcu)
 
  Requires a 5 Volts 2 Amp external power adapter with Micro USB male plug.
 
@@ -23,7 +22,7 @@ up to 180 RGB LED per strip.
 
 # Links
 
-* Web Site [www.NusbioMCU.com](http://www.madeintheusb.net/nusbiomcu)
+* Web Site [www.NusbioMCU.com](http://madeintheusbwebsite.azurewebsites.net/nusbiomcu)
 
 * Drivers:
         Windows 10 - Auto detection 
