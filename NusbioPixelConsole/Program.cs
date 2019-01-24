@@ -84,7 +84,7 @@ namespace NusbioMatrixConsole
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue);
             
-            ConsoleEx.WriteMenu(-1, 2, "0) Rainbow all strip demo  1) Rainbow spread demo  S)quare demo  L)ine demo");
+            ConsoleEx.WriteMenu(-1, 2, "0) Rainbow all strip demo  1) Rainbow spread demo  S)quare demo  L)ine demo 8)x8 Square Demo");
             ConsoleEx.WriteMenu(-1, 6, "I)nit device  Q)uit");
 
             //var maxtrixCount = nusbioMatrix.Count;
@@ -110,19 +110,97 @@ namespace NusbioMatrixConsole
             Spread
         }
 
+        /*
+         * In a 8x8 matrix the pixel are aligned this way
+         * row 0, col 0..7 -> 0, 1, 2, 3, 4, 5, 6, 7
+         * row 1, col 0..7 -> 15, 14, 13, 12, 11, 10, 9, 8
+         * row 2, col 0..7 -> 16, 17, 18, 19, 20, 21 , 22, 23
+         */
 
-        private static void SquareDemo(NusbioPixel nusbioPixel)
+        private static Dictionary<string, int> Matrix8x8PixelMapping = new Dictionary<string, int>() {
+            { "0_0", 0 },
+            { "0_1", 1 },
+        };
+
+        public static int Matrix8x8GetPixelAddr(int x, int y)
+        {
+            var ret = 0;
+            var evenRows = new List<int>() { 0, 2, 4, 6 };
+            var oddRows = new List<int>() { 1, 3, 5, 7 };
+            if (evenRows.Contains(y))
+            {
+                ret = (y * 8) + x;
+            }
+            else if (oddRows.Contains(y))
+            {
+                ret = (y * 8) + (8 - x - 1);
+            }
+            return ret;
+        }
+
+
+        private static void Square8x8Demo(NusbioPixel nusbioPixel)
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, "Square 8x8 Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
             int speed = nusbioPixel.Count <= 16 ? 32 : 16;
-            var quit  = false;
+            var quit = false;
             var jStep = 32;
-            Color bkColor;
 
             while (!quit)
+            {
+                Color bkColor = Color.Black;
+                nusbioPixel.SetStrip(bkColor).Show();
+                for (var row = 0; row < 8; row++)
+                {
+                    for (var col = 0; col < 8; col++)
+                    {
+                        var x = Matrix8x8GetPixelAddr(col, row);
+                        nusbioPixel.SetPixel(x, Color.Red);
+                        nusbioPixel.Show();
+                        nusbioPixel.Wait(50);
+                    }
+                    CheckKeyboard(ref quit, ref speed);
+                    if (quit)
+                        break;
+                }
+                ConsoleEx.Write(0, 24, nusbioPixel.GetByteSecondSentStatus(true), ConsoleColor.Cyan);
+            }
+        }
+
+        private static void Square4x4Demo(NusbioPixel nusbioPixel)
+        {
+            Console.Clear();
+            ConsoleEx.TitleBar(0, "Square 4x4 Demo");
+            ConsoleEx.WriteMenu(-1, 6, "Q)uit");
+
+            int speed = nusbioPixel.Count <= 16 ? 32 : 16;
+            var quit  = false;
+            var jStep = 32;
+            Color bkColor = Color.Black;
+
+            nusbioPixel.SetStrip(bkColor).Show();
+            for (var row = 0; row < 8; row++)
+            {
+                for (var col = 0; col < 8; col++)
+                {
+                    var x = Matrix8x8GetPixelAddr(col, row);
+                    nusbioPixel.SetPixel(x, Color.Red);
+                    nusbioPixel.Show();
+                    nusbioPixel.Wait(500);
+                }
+            }
+
+            for (var i = 0; i < nusbioPixel.Count; i++)
+            {
+                nusbioPixel.SetPixel(i, Color.Red);
+                nusbioPixel.Show();
+                nusbioPixel.Wait(500);
+            }
+
+                while (!quit)
             {
                 for (var j = 0; j < 256; j += jStep)
                 {
@@ -360,7 +438,9 @@ namespace NusbioMatrixConsole
                     if (k == ConsoleKey.Q) quit = true;
                     if (k == ConsoleKey.D0) RainbowDemo(nusbioPixel, RainbowEffect.AllStrip);
                     if (k == ConsoleKey.D1) RainbowDemo(nusbioPixel, RainbowEffect.Spread);
-                    if (k == ConsoleKey.S) SquareDemo(nusbioPixel);
+                    if (k == ConsoleKey.S) Square4x4Demo(nusbioPixel);
+                    if (k == ConsoleKey.D8) Square8x8Demo(nusbioPixel);
+                    
                     if (k == ConsoleKey.L) LineDemo(nusbioPixel);
 
                     if (k == ConsoleKey.I)
