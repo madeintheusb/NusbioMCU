@@ -42,6 +42,7 @@ namespace MadeInTheUSB.MCU
         Strip60  = 60,
         Ring12   = 12,
         Square16 = 16,
+        Square8x8= 64,
         Strip300 = 300,
         Strip180 = 180,
     }
@@ -57,7 +58,7 @@ namespace MadeInTheUSB.MCU
 
         public const int MAX_BRIGHTNESS_EXTERNAL_POWER   = 250;
 
-        public const int NUSBIO_MCU_MAX_LED = 60;
+        public const int NUSBIO_MCU_MAX_LED = 64;
         public const int NUSBIO_PIXELS_MCU_MAX_LED = 180;
                 
         public enum StripIndex

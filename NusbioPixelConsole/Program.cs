@@ -163,7 +163,7 @@ namespace NusbioMatrixConsole
             nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS);
 
             var quit                = false;
-            int speed               = nusbioPixel.Count < 30 ? 75 : 0;
+            int speed               = nusbioPixel.Count <= 30 ? 5 : 00;
             var wheelColorMaxStep   = 256;
             var jWheelColorStep     = 4;
             Color color             = Color.Beige;
@@ -210,12 +210,7 @@ namespace NusbioMatrixConsole
                             break;
                     }
                     sw.Stop();
-                    ConsoleEx.Write(0, 22, string.Format("show() {0} times for animation time:{1:000}ms {2:000}, {3}",
-                        halfLedCount,
-                        sw.ElapsedMilliseconds,
-                        sw.ElapsedMilliseconds / halfLedCount,
-                        nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
-                    
+                    ConsoleEx.Write(0, 22, string.Format("show() {0} times for animation time:{1:000}ms {2:000}, {3}", halfLedCount, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / halfLedCount, nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
                     if (speed > 0)
                         Thread.Sleep(speed);
                     if(CheckKeyboard(ref quit, ref speed) || quit)
@@ -251,7 +246,7 @@ namespace NusbioMatrixConsole
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
             var quit                  = false;
-            int speed                 = 0;
+            int speed                 = 1;
             var jWheelColorStep       = 4;
             var brightness            = 255; // This is for NusbioMCUpixel, will automatically reduced for NusbioMCU
 
@@ -319,12 +314,12 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
-            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80";
+            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80  Square 8)x8";
             #if _300_LEDS
             m += " 3 H)undred";
             #endif
             var pixelTypeChar = ConsoleEx.Question(1, 
-                m , new List<char>() {'3', '6', 'S', 'R', '1'
+                m , new List<char>() {'3', '6', 'S', 'R', '1', '8'
                         #if _300_LEDS
                         , 'H'
                         #endif
@@ -332,6 +327,7 @@ namespace NusbioMatrixConsole
             switch (pixelTypeChar)
             {
                 case '3': return NusbioPixelDeviceType.Strip30;
+                case '8': return NusbioPixelDeviceType.Square8x8;
                 case '6': return NusbioPixelDeviceType.Strip60;
                 case 'S': return NusbioPixelDeviceType.Square16;
                 case 'R': return NusbioPixelDeviceType.Ring12;
