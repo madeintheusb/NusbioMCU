@@ -27,9 +27,9 @@ using System.Drawing;
 namespace MadeInTheUSB.MCU
 {
     /// <summary>
-    /// The Adafruit_GFX architecture requires inheritance, but NusbioMatrix must 
-    /// inherits from NusbioMCU, so I used this class to be able to use Adafruit_GFX
-    /// by NusbioMatrix without direct inheritance.
+    /// Support 8x8 matrix, 
+    /// WS2812B Panel Screen 8*8, 16*16, 8*32 Pixel 256 Pixels 
+    /// Digital Flexible LED Programmed Individually Addressable Full Color DC5V
     /// </summary>
     public class Matrix8x8 : Adafruit_GFX_DrawingColor
     {
@@ -69,7 +69,7 @@ namespace MadeInTheUSB.MCU
         * row 1, col 0..7 -> 15, 14, 13, 12, 11, 10, 9, 8
         * row 2, col 0..7 -> 16, 17, 18, 19, 20, 21 , 22, 23
         */
-        public static int Matrix8x8GetPixelAddr(int x, int y)
+        private static int Matrix8x8GetPixelAddr(int x, int y)
         {
             var ret = 0;
             var evenRows = new List<int>() { 0, 2, 4, 6 };
