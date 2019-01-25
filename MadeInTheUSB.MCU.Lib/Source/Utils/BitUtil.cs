@@ -99,7 +99,6 @@ namespace MadeInTheUSB.WinUtil
         {
             var s = System.Convert.ToString(value, 2);
             return s.PadLeft(8, '0');
-            return s;
         }
 
         public static byte UnsetBit(byte value, byte bit)
@@ -195,8 +194,6 @@ namespace MadeInTheUSB.WinUtil
                 return UnsetBit((byte)value, bit);
         }
     }
-
-  
 }
 
 

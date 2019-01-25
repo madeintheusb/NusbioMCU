@@ -47,24 +47,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Device\Adafruit\Adafruit_GFX_DrawingColor .cs" />
     <Compile Include="Source\Device\Adafruit\Adafruit_GFX.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioEEPROM.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioPixel.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.GFX.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\Nusbio_GFX.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\NusbioEEPROM.cs" />
+    <Compile Include="Source\Device\NusbioPixel.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\NusbioMatrix.GFX.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\Nusbio_GFX.cs" />
     <Compile Include="Source\Device\NusbioMCU\Analog\AnalogLightSensor.cs" />
     <Compile Include="Source\Device\NusbioMCU\Analog\AnalogSensor.cs" />
     <Compile Include="Source\Device\NusbioMCU\PerformanceTracker\IPerformanceTracker.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.ArduinoFirmwareUploader.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.Enum.cs" />
-    <Compile Include="Source\Device\NotUsed\NusbioMatrix.Char.v0.cs" />
+    <Compile Include="Source\Device\Deprecated\NotUsed\NusbioMatrix.Char.v0.cs" />
     <Compile Include="Source\Device\NusbioMCU\PerformanceTracker\PerformanceTrackerImpl.cs" />
     <Compile Include="Source\Device\NusbioMCU\NusbioMCUProtocolRecorder.cs" />
-    <Compile Include="Source\Device\Utility\NusbioLandscapeMatrix.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\Utility\NusbioLandscapeMatrix.cs" />
     <Compile Include="Source\Device\NusbioMCU\MadeInTheUSB.Mcu.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Scroll.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.Char.cs" />
-    <Compile Include="Source\Device\NusbioMatrix\NusbioMatrix.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\NusbioMatrix.Scroll.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\NusbioMatrix.Char.cs" />
+    <Compile Include="Source\Device\Deprecated\NusbioMatrix\NusbioMatrix.cs" />
+    <Compile Include="Source\Device\Matrix8x8.cs" />
     <Compile Include="Source\McuCom\McuCom.cs" />
     <Compile Include="Source\McuCom\McuComResponse.cs" />
     <Compile Include="Source\Utils\BitUtil.cs" />

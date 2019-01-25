@@ -3,6 +3,8 @@
     MadeInTheUSB MCU ATMega328 Based Device
     Copyright (C) 2016,2017 MadeInTheUSB LLC 
 
+    * * *  MAX7219 MATRIX IS DEPRECATED * * *
+
     MIT license, all text above must be included in any redistribution
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
