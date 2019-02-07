@@ -81,8 +81,7 @@ namespace MadeInTheUSB.MCU
             }
         }
 
-        private static NusbioPixel SetNusbioPixelAsConnected(
-            NusbioPixel nusbioPixel, Color c)
+        private static NusbioPixel SetNusbioPixelAsConnected(NusbioPixel nusbioPixel, Color c)
         {
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                 nusbioPixel.SetStrip(c, nusbioPixel.DEFAULT_BRIGHTNESS, StripIndex.S1);
@@ -200,7 +199,7 @@ namespace MadeInTheUSB.MCU
             var r = this.Show(stripIndex: stripIndex);
 
             if (!r.Succeeded && System.Diagnostics.Debugger.IsAttached)
-                System.Diagnostics.Debugger.Break();
+                Debugger.Break();
 
             return this;
         }
@@ -222,7 +221,7 @@ namespace MadeInTheUSB.MCU
 
             var rr = new McuComResponse();
             return McuComResponse.Success;
-
+            /*
             Send(HandleStripIndex(Mcu.McuCommand.CP_RGB_PIXEL_SET_COUNT, stripIndex), (byte)count);
             var r = ReadAnswer();
             if (r.Succeeded)
@@ -235,6 +234,7 @@ namespace MadeInTheUSB.MCU
                 }
             }
             else return r;
+            */
         }
 
         public McuComResponse Show(
@@ -243,14 +243,16 @@ namespace MadeInTheUSB.MCU
             )
         {
             Send(HandleStripIndex(Mcu.McuCommand.CP_RGB_PIXEL_DRAW, stripIndex), 0);
-            //var r = ReadAnswer();
-            //if (r.Succeeded)
-            //{
-            //    if (r.GetParam(0) == (int)stripIndex)
-            //        return r;
-            //    else
-            //        return r.Fail("Show() did not return expected value");
-            //}
+            /*
+            var r = ReadAnswer();
+            if (r.Succeeded)
+            {
+                if (r.GetParam(0) == (int)stripIndex)
+                    return r;
+                else
+                    return r.Fail("Show() did not return expected value");
+            }
+            */
             // Show pixel we do not read the answer
             Thread.Sleep(minimumWait);
             return McuComResponse.Success;
@@ -285,12 +287,12 @@ namespace MadeInTheUSB.MCU
                 return this.SetPixel(color);
         }
 
-        public McuComResponse SetPixel(int index, System.Drawing.Color color)
+        public McuComResponse SetPixel(int index, Color color)
         {
             return SetPixel(index, color, StripIndex.S0);
         }
 
-        public McuComResponse SetPixel(int index, System.Drawing.Color color, StripIndex stripIndex)
+        public McuComResponse SetPixel(int index, Color color, StripIndex stripIndex)
         {
             return this.SetPixel(index, color.R, color.G, color.B, stripIndex: stripIndex);
         }
@@ -300,7 +302,7 @@ namespace MadeInTheUSB.MCU
             return this.SetPixel(color, StripIndex.S0);
         }
 
-        public McuComResponse SetPixel(System.Drawing.Color color, StripIndex stripIndex)
+        public McuComResponse SetPixel(Color color, StripIndex stripIndex)
         {
             return this.SetPixel(color.R, color.G, color.B, stripIndex: stripIndex);
         }
@@ -317,13 +319,6 @@ namespace MadeInTheUSB.MCU
             buffer.Add((byte)b);
             this.Send(HandleStripIndex(Mcu.McuCommand.CP_RGB_PIXEL_SET_COLOR_NO_INDEX, stripIndex), r, buffer.ToArray());
 
-            //var rr = ReadAnswer();
-            //if (rr.Succeeded)
-            //{
-            //    if (rr.GetParam(0) == (int)stripIndex) ;
-            //    return rr;
-            //}
-
             return McuComResponse.Success;
         }
 
@@ -339,13 +334,6 @@ namespace MadeInTheUSB.MCU
             buffer.Add((byte)g);
             buffer.Add((byte)b);
             this.Send(HandleStripIndex(Mcu.McuCommand.CP_RGB_PIXEL_SET_COLOR_1BYTE_INDEX, stripIndex), index, buffer.ToArray());
-
-            //var rr = ReadAnswer();
-            //if (rr.Succeeded)
-            //{
-            //    if (rr.GetParam(0) == (int)stripIndex) ;
-            //        return rr;
-            //}
 
             return McuComResponse.Success;
         }

@@ -388,12 +388,13 @@ namespace NusbioMatrixConsole
                         if(pixelIndex == 0) // Setting the pixel this way, will support more than 255 LED
                             nusbioPixel.SetPixel(pixelIndex, color); // Set led index to 0
                         else
-                            nusbioPixel.SetPixel(color); // Set led index to 0
+                            nusbioPixel.SetPixel(color); // Set led to current position
 
+                        // With NusbioMCU with 2 string, set the second string
                         if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels && nusbioPixel.Count <= NusbioPixel.NUSBIO_PIXELS_MCU_MAX_LED)
                         {
-                            if (pixelIndex == 0)// Setting the pixel this way, will support more than 255 LED
-                                nusbioPixel.SetPixel(pixelIndex, color, NusbioPixel.StripIndex.S1); // Set led index to 0
+                            if (pixelIndex == 0)
+                                nusbioPixel.SetPixel(pixelIndex, color, NusbioPixel.StripIndex.S1);
                             else
                                 nusbioPixel.SetPixel(color, NusbioPixel.StripIndex.S1);
                         }
@@ -401,19 +402,19 @@ namespace NusbioMatrixConsole
                         if (nusbioPixel.Count <= 120)
                         {
                             if (pixelIndex % 4 == 0) Console.WriteLine();
-                            Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", pixelIndex, color.R, color.G, color.B); // , ToHexValue(color) html value
+                            Console.Write("[{0:x2}]rgb:{1:x2},{2:x2},{3:x2} ", pixelIndex, color.R, color.G, color.B);
                         }
                     }
 
                     nusbioPixel.Show();
                     if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                         nusbioPixel.Show(NusbioPixel.StripIndex.S1);
+
                     sw.Stop();
 
                     ConsoleEx.Write(0, 23, string.Format("SetPixel()/Show() {0}", nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
                     
-                    if (speed > 0)
-                        Thread.Sleep(speed);
+                    if (speed > 0) Thread.Sleep(speed);
                     CheckKeyboard(ref quit, ref speed);
                     if (quit)   
                         break;
@@ -460,7 +461,6 @@ namespace NusbioMatrixConsole
 
             NusbioPixel nusbioPixel = NusbioPixel.ConnectToMCU(null, MAX_LED);
             if (nusbioPixel == null) return;
-
 
             Cls(nusbioPixel);
 
