@@ -1,11 +1,11 @@
 ﻿/*
     NusbioMatrix/NusbioPixel devices for Windows/.NET
     MadeInTheUSB MCU ATMega328 Based Device
-    Copyright (C) 2016,2017 MadeInTheUSB LLC 
+    Copyright (C) 2016, 2017, 2019 MadeInTheUSB LLC
 
     MIT license, all text above must be included in any redistribution
 
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
     associated documentation files (the "Software"), to deal in the Software without restriction, 
     including without limitation the rights to use, copy, modify, merge, publish, distribute, 
     sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
@@ -52,9 +52,9 @@ namespace MadeInTheUSB.MCU
             CP_ANALOG_WRITE     = 14,
 
             CP_RGB_PIXEL_SET_COUNT               = 20, // Follow by an int (byte 0, byte 1)
-            CP_RGB_PIXEL_SET_COLOR_1BYTE_INDEX   = 21, // 1 byte for pixel index, r,g,b as byte. Faster is index is less than 256
+            CP_RGB_PIXEL_SET_COLOR_1BYTE_INDEX   = 21, // 1 byte for pixel index, r,g,b as byte. Index is less than 256.
             CP_RGB_PIXEL_SET_COLOR_NO_INDEX      = 22, // r,g,b as byte, inc last index position
-            CP_RGB_PIXEL_SET_COLOR_2BYTE_INDEX   = 23, // 2 byte for pixel index, r,g,b as byte
+            CP_RGB_PIXEL_SET_COLOR_2BYTE_INDEX   = 23, // 2 bytes for pixel index, r,g,b as byte
             CP_RGB_PIXEL_DRAW                    = 24, // Refresh strip
             CP_RGB_PIXEL_SET_BRIGTHNESS          = 25,
 
@@ -82,16 +82,16 @@ namespace MadeInTheUSB.MCU
         /// </summary>
         public enum FirmwareName
         {
-            Unknown = 0,
-            NusbioMcuMatrixPixel = 1,
-            NusbioMcuEeprom = 2, // Not used
+            Unknown               = 0,
+            NusbioMcuMatrixPixel  = 1,
+            NusbioMcuEeprom       = 2, // Not used
             NusbioMcu2StripPixels = 4,
         }
 
         public enum DigitalIOMode
         {
-            INPUT = 0x0,
-            OUTPUT = 0x1,
+            INPUT        = 0x0,
+            OUTPUT       = 0x1,
             INPUT_PULLUP = 0x2
         }
 
@@ -109,15 +109,8 @@ namespace MadeInTheUSB.MCU
             Gpio6 = 6,
         }
 
-        //public static List<GpioPin> GpioPins = new List<GpioPin>()
-        //{
-        //    GpioPin.Gpio4,
-        //    GpioPin.Gpio5,
-        //    GpioPin.Gpio6,
-        //    GpioPin.Gpio7
-        //};
-
-        public static List<GpioPwmPin> PwmGpioPins = new List<GpioPwmPin>() {
+        public static List<GpioPwmPin> PwmGpioPins = new List<GpioPwmPin>()
+        {
             GpioPwmPin.Gpio5,
             GpioPwmPin.Gpio6,
         };

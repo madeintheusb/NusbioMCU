@@ -422,19 +422,18 @@ namespace NusbioMatrixConsole
             }
         }
 
-
         static NusbioPixelDeviceType AskUserForPixelType()
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
             var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80  Square 8)x8";
             #if _300_LEDS
-            m += " 3 H)undred";
+                m += " 3 H)undred";
             #endif
             var pixelTypeChar = ConsoleEx.Question(1, 
                 m , new List<char>() {'3', '6', 'S', 'R', '1', '8'
                         #if _300_LEDS
-                        , 'H'
+                            , 'H'
                         #endif
                 });
             switch (pixelTypeChar)
