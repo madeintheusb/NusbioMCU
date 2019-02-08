@@ -87,21 +87,19 @@ namespace NusbioMatrixConsole
             ConsoleEx.WriteMenu(-1, 2, "0) Rainbow all strip demo  1) Rainbow spread demo  S)quare demo  L)ine demo  8)x8 Square Demo");
             ConsoleEx.WriteMenu(-1, 6, "I)nit device  Q)uit");
 
-            //var maxtrixCount = nusbioMatrix.Count;
             var m = string.Format("Firmware {0} v {1}, Port:{2}, LED Count:{3}", 
                 nusbioMatrix.Firmware, 
                 nusbioMatrix.FirmwareVersion,
                 nusbioMatrix.ComPort,
                 nusbioMatrix.Count);
+
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 3, m, ConsoleColor.White, ConsoleColor.DarkCyan);
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue);
         }
         
         private static string ToHexValue(Color color)
         {
-            return "#" + color.R.ToString("X2") +
-                   color.G.ToString("X2") +
-                   color.B.ToString("X2");
+            return $"#{color.R.ToString("X2")}{color.G.ToString("X2")}{color.B.ToString("X2")}";
         }
 
         enum RainbowEffect
@@ -110,115 +108,49 @@ namespace NusbioMatrixConsole
             Spread
         }
 
-        /*
-         * In a 8x8 matrix the pixel are aligned this way
-         * row 0, col 0..7 -> 0, 1, 2, 3, 4, 5, 6, 7
-         * row 1, col 0..7 -> 15, 14, 13, 12, 11, 10, 9, 8
-         * row 2, col 0..7 -> 16, 17, 18, 19, 20, 21 , 22, 23
-         */
-        public static int Matrix8x8GetPixelAddr(int x, int y)
-        {
-            var ret = 0;
-            var evenRows = new List<int>() { 0, 2, 4, 6 };
-            var oddRows = new List<int>() { 1, 3, 5, 7 };
-            if (evenRows.Contains(y))
-            {
-                ret = (y * 8) + x;
-            }
-            else if (oddRows.Contains(y))
-            {
-                ret = (y * 8) + (8 - x - 1);
-            }
-            return ret;
-        }
-
         private static void Square8x8Demo(NusbioPixel nusbioPixel)
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, "Square 8x8 Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
-            var quit = false;
-            var speed = 75;
-            var matrix8x8 = new Matrix8x8(nusbioPixel);
-            matrix8x8.Clear(Color.Black).Show().Wait(speed);
+            var quit         = false;
+            var speed        = 75;
+            var jStep        = 4;
+            var j            = 0;
+            var color        = RGBHelper.Wheel(j);
+            var rgb8x8Matrix = new Matrix8x8(nusbioPixel);
 
-            var jStep = 4;
-            var j = 0;
-            var color = RGBHelper.Wheel(j);
+            rgb8x8Matrix.Clear(Color.Black).Show().Wait(speed);
 
             while (!quit)
             {
                 for (var x = 0; x < 4; x++)
                 {
                     color = RGBHelper.Wheel(j);
-                    j += jStep;
+                    j    += jStep;
                     if (j >= 256) j = 0;
 
-                    matrix8x8.DrawRect(new Rectangle(x, x, 8-(x*2), 8-(x*2)), color);
-                    matrix8x8.Show().Wait(speed);
+                    rgb8x8Matrix.DrawRect(new Rectangle(x, x, 8-(x*2), 8-(x*2)), color);
+                    rgb8x8Matrix.Show().Wait(speed);
                 }
 
-                matrix8x8.Wait(speed);
+                rgb8x8Matrix.Wait(speed);
                 CheckKeyboard(ref quit, ref speed);
                 if (quit) break;
 
+                // Draw the matrix to all black
                 for (var x = 4-1; x >= 0; x--)
                 {
-                    matrix8x8.DrawRect(new Rectangle(x, x, 8 - (x * 2), 8 - (x * 2)), Color.Black);
-                    matrix8x8.Show().Wait(speed);
+                    rgb8x8Matrix.DrawRect(new Rectangle(x, x, 8 - (x * 2), 8 - (x * 2)), Color.Black);
+                    rgb8x8Matrix.Show().Wait(speed);
                 }
 
-                matrix8x8.Wait(speed);
+                rgb8x8Matrix.Wait(speed);
                 CheckKeyboard(ref quit, ref speed);
                 if (quit) break;
 
                 ConsoleEx.Write(0, 23, $"Speed:{speed}", ConsoleColor.Cyan);
-                ConsoleEx.Write(0, 24, nusbioPixel.GetByteSecondSentStatus(true), ConsoleColor.Cyan);
-            }
-        }
-
-        private static void Square8x8Demo_old(NusbioPixel nusbioPixel)
-        {
-            Console.Clear();
-            ConsoleEx.TitleBar(0, "Square 8x8 Demo");
-            ConsoleEx.WriteMenu(-1, 6, "Q)uit");
-
-            Color bkColor0 = Color.Black;
-            nusbioPixel.SetStrip(bkColor0).Show();
-
-            var matrix8x8 = new Matrix8x8(nusbioPixel);
-            matrix8x8.DrawRect(new Rectangle(0, 0, 8, 8), Color.GreenYellow);
-            matrix8x8.Show();
-
-
-            int speed = nusbioPixel.Count <= 16 ? 32 : 16;
-            var quit = false;
-            var jStep = 256 / 64; // 4
-            var j = 0;
-
-            while (!quit)
-            {
-                Color bkColor = Color.Black;
-                nusbioPixel.SetStrip(bkColor).Show();
-                for (var row = 0; row < 8; row++)
-                {
-                    for (var col = 0; col < 8; col++)
-                    {
-                        var x = Matrix8x8GetPixelAddr(col, row);
-                        bkColor = RGBHelper.Wheel(j);
-                        j += jStep;
-                        if (j >= 256) j = 0;
-                        ConsoleEx.WriteLine(1, 3, $"jStep:{j:000}", ConsoleColor.Yellow);
-
-                        nusbioPixel.SetPixel(x, bkColor);
-                        nusbioPixel.Show();
-                        nusbioPixel.Wait(50);
-                    }
-                    CheckKeyboard(ref quit, ref speed);
-                    if (quit)
-                        break;
-                }
                 ConsoleEx.Write(0, 24, nusbioPixel.GetByteSecondSentStatus(true), ConsoleColor.Cyan);
             }
         }
@@ -451,14 +383,14 @@ namespace NusbioMatrixConsole
 
         static void Main(string[] args)
         {
-            var quit                    = false;
-             _rgbLedType                = AskUserForPixelType();
-            var MAX_LED                 = (int)_rgbLedType;
+            var quit     = false;
+             _rgbLedType = AskUserForPixelType();
+            var maxLED   = (int)_rgbLedType;
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
             Console.WriteLine("");
 
-            NusbioPixel nusbioPixel = NusbioPixel.ConnectToMCU(null, MAX_LED);
+            NusbioPixel nusbioPixel = NusbioPixel.ConnectToMCU(null, maxLED);
             if (nusbioPixel == null) return;
 
             Cls(nusbioPixel);
@@ -468,18 +400,15 @@ namespace NusbioMatrixConsole
                 if (Console.KeyAvailable)
                 {
                     var k = Console.ReadKey(true).Key;
+
                     if (k == ConsoleKey.Q) quit = true;
                     if (k == ConsoleKey.D0) RainbowDemo(nusbioPixel, RainbowEffect.AllStrip);
                     if (k == ConsoleKey.D1) RainbowDemo(nusbioPixel, RainbowEffect.Spread);
                     if (k == ConsoleKey.S) Square4x4Demo(nusbioPixel);
                     if (k == ConsoleKey.D8) Square8x8Demo(nusbioPixel);
-                    
                     if (k == ConsoleKey.L) LineDemo(nusbioPixel);
+                    if (k == ConsoleKey.I) nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, maxLED).Wait(500).SetStrip(Color.Green);
 
-                    if (k == ConsoleKey.I)
-                    {
-                        nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
-                    }
                     Cls(nusbioPixel);
                 }
                 else ConsoleEx.WaitMS(100);
