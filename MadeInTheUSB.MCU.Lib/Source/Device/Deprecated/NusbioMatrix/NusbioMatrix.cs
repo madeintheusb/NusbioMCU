@@ -86,6 +86,8 @@ namespace MadeInTheUSB.MCU
 
         public NusbioMatrix(int baud = BAUD) : base(null, baud)
         {
+            throw new ApplicationException("NusbioMatrix is deprecated");
+
             _nusbio_gfx = new Nusbio_GFX(4*8, 8, this);
         }
 
