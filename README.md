@@ -24,14 +24,13 @@
 * Web Site [www.NusbioMCU.com](http://madeintheusbwebsite.azurewebsites.net/nusbiomcu)
 
 * Drivers:
-        Windows 10 - Auto detection 
-            [Video](https://www.youtube.com/watch?v=tqPd-hfGUjQ&feature=youtu.be)
-        Windows 7 - NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link
-        http://madeintheusb.net/Drivers/NusbioMCU.CH341SER.CH340.Driver.zip
+	- Windows 10 - Auto detection [Video](https://www.youtube.com/watch?v=tqPd-hfGUjQ&feature=youtu.be)
+	- Windows 7 - NusbioMCU use the Serial Communication chip name CH340. Install the driver from this link
+	http://madeintheusb.net/Drivers/NusbioMCU.CH341SER.CH340.Driver.zip
 
 # Copyright
 
-    Copyright (C) 2016, 2017 MadeInTheUSB LLC
+    Copyright (C) 2016, 2019 MadeInTheUSB LLC
 
 ## .NET source code License - MIT License
 
