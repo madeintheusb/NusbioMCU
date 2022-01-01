@@ -239,17 +239,13 @@ namespace NusbioMatrixConsole
             return d1 + (d2 - d1) * fraction;
         }
 
-        private static void RainbowDemo(NusbioPixel nusbioPixel, RainbowEffect rainbowEffect)
+        private static void RainbowDemo(NusbioPixel nusbioPixel, RainbowEffect rainbowEffect, int speed = 1, int jWheelColorStep = 4, int brightness = 64)
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, "Rainbow Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
-
             var quit                  = false;
-            int speed                 = 1;
-            var jWheelColorStep       = 4;
-            var brightness            = 255; // This is for NusbioMCUpixel, will automatically reduced for NusbioMCU
-
+            
             nusbioPixel.SetBrightness(brightness);
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                 nusbioPixel.SetBrightness(brightness, NusbioPixel.StripIndex.S1);
@@ -314,16 +310,21 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
-            var  m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80  Square 8)x8";
-            #if _300_LEDS
+            var m = "Pixel Type:  Strip 3)0  Strip 6)0  S)quare 16  R)ing 12 Strip 1)80  Square 8)x8";
+#if _300_LEDS
             m += " 3 H)undred";
-            #endif
-            var pixelTypeChar = ConsoleEx.Question(1, 
-                m , new List<char>() {'3', '6', 'S', 'R', '1', '8'
+#endif
+            var pixelTypeChar = ConsoleEx.Question(1,
+                m, new List<char>() {'3', '6', 'S', 'R', '1', '8'
                         #if _300_LEDS
                         , 'H'
                         #endif
                 });
+            return GetMaxLed(pixelTypeChar);
+        }
+
+        private static NusbioPixelDeviceType GetMaxLed(char pixelTypeChar)
+        {
             switch (pixelTypeChar)
             {
                 case '3': return NusbioPixelDeviceType.Strip30;
@@ -337,10 +338,40 @@ namespace NusbioMatrixConsole
             return NusbioPixelDeviceType.Unknown;
         }
 
+        static string GetArg(string[] args, string name)
+        {
+            for (var i = 0; i < args.Length; i++)
+            {
+                if (args[i] == name)
+                    return args[i + 1];
+            }
+            return null;
+        }
+
+        static int GetArg(string[] args, string name, int defaultValue)
+        {
+            var a = GetArg(args, name);
+            if (a == null)
+                return defaultValue;
+            return int.Parse(a);
+        }
+
+        /// <summary>
+        /// -deviceType 8 8x8LedSquare -command 48 -speed 512 -jWheelColorStep 1 -brightness 12
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            var quit                    = false;
-             _rgbLedType                = AskUserForPixelType();
+            var quit = false;
+
+            if (args.Length > 0)
+            {
+                var devType = GetArg(args, "-deviceType")[0];
+                _rgbLedType = GetMaxLed(devType);
+            }
+            else {
+                _rgbLedType = AskUserForPixelType();
+            }
             var MAX_LED                 = (int)_rgbLedType;
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
@@ -349,27 +380,38 @@ namespace NusbioMatrixConsole
             NusbioPixel nusbioPixel = NusbioPixel.ConnectToMCU(null, MAX_LED);
             if (nusbioPixel == null) return;
 
-
             Cls(nusbioPixel);
+            
 
             while (!quit)
             {
+                ConsoleKey k = ConsoleKey.Escape;
+                ConsoleEx.WaitMS(256);
                 if (Console.KeyAvailable)
                 {
-                    var k = Console.ReadKey(true).Key;
-                    if (k == ConsoleKey.Q) quit = true;
-                    if (k == ConsoleKey.D0) RainbowDemo(nusbioPixel, RainbowEffect.AllStrip);
-                    if (k == ConsoleKey.D1) RainbowDemo(nusbioPixel, RainbowEffect.Spread);
-                    if (k == ConsoleKey.S) SquareDemo(nusbioPixel);
-                    if (k == ConsoleKey.L) LineDemo(nusbioPixel);
+                    k = Console.ReadKey(true).Key;
+                }
+                else {
+                    var c = GetArg(args, "-command", 0);
+                    if (c > 0)
+                        k = (ConsoleKey)c;
+                }
+                if (k == ConsoleKey.Q) quit = true;
 
-                    if (k == ConsoleKey.I)
-                    {
-                        nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
-                    }
+                if (k == ConsoleKey.D0) RainbowDemo(nusbioPixel, RainbowEffect.AllStrip, GetArg(args, "-speed", 1), GetArg(args, "-jWheelColorStep", 4), GetArg(args, "-brightness", 64));
+                if (k == ConsoleKey.D1) RainbowDemo(nusbioPixel, RainbowEffect.Spread, GetArg(args, "-speed", 1), GetArg(args, "-jWheelColorStep", 4), GetArg(args, "-brightness", 64));
+                if (k == ConsoleKey.S) SquareDemo(nusbioPixel);
+                if (k == ConsoleKey.L) LineDemo(nusbioPixel);
+
+                if (k == ConsoleKey.I)
+                {
+                    nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
+                }
+                if(k != ConsoleKey.Escape)
+                {
                     Cls(nusbioPixel);
                 }
-                else ConsoleEx.WaitMS(100);
+                
             }
             nusbioPixel.Dispose();
         }
