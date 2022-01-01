@@ -2,6 +2,8 @@
     Demo application for the NusbioMCU and 1 or 4 8x8 LED Matrix.
     Copyright (C) 2016,2017 MadeInTheUSB LLC
     Written by FT
+
+    * * * NUSBIOMATRIX IS DEPRECATED * * *
     
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
     associated documentation files (the "Software"), to deal in the Software without restriction, 
@@ -20,16 +22,12 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using MadeInTheUSB;
 using System.Drawing;
 using MadeInTheUSB.MCU;
 
-// https://www.youtube.com/watch?v=JgzVCSFaz3I
 namespace NusbioMatrixConsole
 {
     class Program
@@ -392,8 +390,9 @@ namespace NusbioMatrixConsole
 
         static void Main(string[] args)
         {
-            Console.Clear();
+            throw new ApplicationException("NusbioMatrix is deprecated");
 
+            Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue);
             var matrixCountChar = ConsoleEx.Question(1, "Maxtrix Count 1, 2, 4 or 8", new List<char>() {'1', '2', '4', '8'});
             //var matrixCountChar = '4';

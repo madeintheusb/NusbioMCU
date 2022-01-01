@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NusbioMatrix.Console", "NusbioMatrixConsole\NusbioMatrix.Console.csproj", "{DADC1AE4-62BC-4C7E-938A-E9BD67E29C5B}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadeInTheUSB.Nusbio.WebClient", "MadeInTheUSB.Nusbio.WebClient\MadeInTheUSB.Nusbio.WebClient\MadeInTheUSB.Nusbio.WebClient.csproj", "{C152E905-1681-4466-B185-9FDC9EA5ECCC}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NusbioPixel.FSharp.Demo", "NusbioPixel.FSharp.Demo\NusbioPixel.FSharp.Demo.fsproj", "{B3C570A8-DBFA-4B39-A81A-D723D802999C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deprecated", "Deprecated", "{0543811F-47F7-437A-9D4D-68C8CF5E15F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,5 +68,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DADC1AE4-62BC-4C7E-938A-E9BD67E29C5B} = {0543811F-47F7-437A-9D4D-68C8CF5E15F4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8FEF086-4FD3-44DD-88B4-5532F251752E}
 	EndGlobalSection
 EndGlobal
