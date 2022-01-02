@@ -40,19 +40,19 @@ namespace NusbioMatrixConsole
 
         public static string GetAssemblyCopyright()
         {
-            Assembly currentAssem = typeof (Program).Assembly;
-            object[] attribs = currentAssem.GetCustomAttributes(typeof (AssemblyCopyrightAttribute), true);
+            Assembly currentAssem = typeof(Program).Assembly;
+            object[] attribs = currentAssem.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), true);
             if (attribs.Length > 0)
-                return ((AssemblyCopyrightAttribute) attribs[0]).Copyright;
+                return ((AssemblyCopyrightAttribute)attribs[0]).Copyright;
             return null;
         }
 
         static string GetAssemblyProduct()
         {
-            Assembly currentAssem = typeof (Program).Assembly;
-            object[] attribs = currentAssem.GetCustomAttributes(typeof (AssemblyProductAttribute), true);
+            Assembly currentAssem = typeof(Program).Assembly;
+            object[] attribs = currentAssem.GetCustomAttributes(typeof(AssemblyProductAttribute), true);
             if (attribs.Length > 0)
-                return ((AssemblyProductAttribute) attribs[0]).Product;
+                return ((AssemblyProductAttribute)attribs[0]).Product;
             return null;
         }
 
@@ -83,12 +83,12 @@ namespace NusbioMatrixConsole
         {
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct(), ConsoleColor.Yellow, ConsoleColor.DarkBlue);
-            
+
             ConsoleEx.WriteMenu(-1, 2, "0) Rainbow all strip demo  1) Rainbow spread demo  S)quare demo  L)ine demo  8)x8 Square Demo");
             ConsoleEx.WriteMenu(-1, 6, "I)nit device  Q)uit");
 
-            var m = string.Format("Firmware {0} v {1}, Port:{2}, LED Count:{3}", 
-                nusbioMatrix.Firmware, 
+            var m = string.Format("Firmware {0} v {1}, Port:{2}, LED Count:{3}",
+                nusbioMatrix.Firmware,
                 nusbioMatrix.FirmwareVersion,
                 nusbioMatrix.ComPort,
                 nusbioMatrix.Count);
@@ -96,7 +96,7 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 3, m, ConsoleColor.White, ConsoleColor.DarkCyan);
             ConsoleEx.TitleBar(ConsoleEx.WindowHeight - 2, GetAssemblyCopyright(), ConsoleColor.White, ConsoleColor.DarkBlue);
         }
-        
+
         private static string ToHexValue(Color color)
         {
             return $"#{color.R.ToString("X2")}{color.G.ToString("X2")}{color.B.ToString("X2")}";
@@ -114,11 +114,11 @@ namespace NusbioMatrixConsole
             ConsoleEx.TitleBar(0, "Square 8x8 Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
-            var quit         = false;
-            var speed        = 75;
-            var jStep        = 4;
-            var j            = 0;
-            var color        = RGBHelper.Wheel(j);
+            var quit = false;
+            var speed = 75;
+            var jStep = 4;
+            var j = 0;
+            var color = RGBHelper.Wheel(j);
             var rgb8x8Matrix = new Matrix8x8(nusbioPixel);
 
             rgb8x8Matrix.Clear(Color.Black).Show().Wait(speed);
@@ -128,10 +128,10 @@ namespace NusbioMatrixConsole
                 for (var x = 0; x < 4; x++)
                 {
                     color = RGBHelper.Wheel(j);
-                    j    += jStep;
+                    j += jStep;
                     if (j >= 256) j = 0;
 
-                    rgb8x8Matrix.DrawRect(new Rectangle(x, x, 8-(x*2), 8-(x*2)), color);
+                    rgb8x8Matrix.DrawRect(new Rectangle(x, x, 8 - (x * 2), 8 - (x * 2)), color);
                     rgb8x8Matrix.Show().Wait(speed);
                 }
 
@@ -140,7 +140,7 @@ namespace NusbioMatrixConsole
                 if (quit) break;
 
                 // Draw the matrix to all black
-                for (var x = 4-1; x >= 0; x--)
+                for (var x = 4 - 1; x >= 0; x--)
                 {
                     rgb8x8Matrix.DrawRect(new Rectangle(x, x, 8 - (x * 2), 8 - (x * 2)), Color.Black);
                     rgb8x8Matrix.Show().Wait(speed);
@@ -162,7 +162,7 @@ namespace NusbioMatrixConsole
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
 
             int speed = nusbioPixel.Count <= 16 ? 32 : 16;
-            var quit  = false;
+            var quit = false;
             var jStep = 32;
             Color bkColor = Color.Black;
 
@@ -176,7 +176,7 @@ namespace NusbioMatrixConsole
                     {
                         if (i == 0 || true)
                         {
-                            bkColor = RGBHelper.Wheel((i+j) & 255);
+                            bkColor = RGBHelper.Wheel((i + j) & 255);
                             nusbioPixel.SetStrip(bkColor).Show();
                         }
 
@@ -188,7 +188,7 @@ namespace NusbioMatrixConsole
                         if (quit) break;
                     }
                     if (speed > 0)
-                        Thread.Sleep(speed*2);
+                        Thread.Sleep(speed * 2);
                     if (quit) break;
                 }
                 ConsoleEx.Write(0, 24, nusbioPixel.GetByteSecondSentStatus(true), ConsoleColor.Cyan);
@@ -206,11 +206,11 @@ namespace NusbioMatrixConsole
 
             nusbioPixel.SetBrightness(nusbioPixel.DEFAULT_BRIGHTNESS);
 
-            var quit                = false;
-            int speed               = nusbioPixel.Count <= 30 ? 5 : 00;
-            var wheelColorMaxStep   = 256;
-            var jWheelColorStep     = 4;
-            Color color             = Color.Beige;
+            var quit = false;
+            int speed = nusbioPixel.Count <= 30 ? 5 : 00;
+            var wheelColorMaxStep = 256;
+            var jWheelColorStep = 4;
+            Color color = Color.Beige;
 
             while (!quit)
             {
@@ -219,7 +219,7 @@ namespace NusbioMatrixConsole
                     // Set the background color of the strip
                     ConsoleEx.WriteLine(0, 2, string.Format("jWheelColorIndex:{0:000}, jWheelColorStep:{1:000}, Speed:{2:000}", jWheelColorIndex, jWheelColorStep, speed), ConsoleColor.White);
                     var sw = Stopwatch.StartNew();
-                    color  = RGBHelper.Wheel((jWheelColorIndex) & 255);
+                    color = RGBHelper.Wheel((jWheelColorIndex) & 255);
                     for (var i = 0; i < nusbioPixel.Count; i++) // Set all te pixel to one color
                     {
                         if (i == 0)
@@ -242,22 +242,22 @@ namespace NusbioMatrixConsole
                     var halfLedCount = (nusbioPixel.Count / 2) + 1;
                     // Set the foreground Color or animation color scrolling
                     sw = Stopwatch.StartNew();
-                    var fgColor = RGBHelper.Wheel((jWheelColorIndex+(((int)(jWheelColorStep*4)))) & 255);
+                    var fgColor = RGBHelper.Wheel((jWheelColorIndex + (((int)(jWheelColorStep * 4)))) & 255);
                     for (var i = 0; i < halfLedCount; i++)
                     {
                         nusbioPixel.SetPixel(i, fgColor);
-                        nusbioPixel.SetPixel(nusbioPixel.Count-i, fgColor);
+                        nusbioPixel.SetPixel(nusbioPixel.Count - i, fgColor);
                         nusbioPixel.Show();
                         if (speed > 0)
                             Thread.Sleep(speed); // Give a better effect
-                        if(CheckKeyboard(ref quit, ref speed))
+                        if (CheckKeyboard(ref quit, ref speed))
                             break;
                     }
                     sw.Stop();
                     ConsoleEx.Write(0, 22, string.Format("show() {0} times for animation time:{1:000}ms {2:000}, {3}", halfLedCount, sw.ElapsedMilliseconds, sw.ElapsedMilliseconds / halfLedCount, nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
                     if (speed > 0)
                         Thread.Sleep(speed);
-                    if(CheckKeyboard(ref quit, ref speed) || quit)
+                    if (CheckKeyboard(ref quit, ref speed) || quit)
                         break;
                 }
             }
@@ -288,8 +288,8 @@ namespace NusbioMatrixConsole
             Console.Clear();
             ConsoleEx.TitleBar(0, "Rainbow Demo");
             ConsoleEx.WriteMenu(-1, 6, "Q)uit");
-            var quit                  = false;
-            
+            var quit = false;
+
             nusbioPixel.SetBrightness(brightness);
             if (nusbioPixel.Firmware == Mcu.FirmwareName.NusbioMcu2StripPixels)
                 nusbioPixel.SetBrightness(brightness, NusbioPixel.StripIndex.S1);
@@ -306,14 +306,14 @@ namespace NusbioMatrixConsole
 
                     for (var pixelIndex = 0; pixelIndex < nusbioPixel.Count; pixelIndex++)
                     {
-                        var color       = Color.Beige;
+                        var color = Color.Beige;
 
                         if (rainbowEffect == RainbowEffect.AllStrip)
                             color = RGBHelper.Wheel((jWheelColorIndex) & 255);
-                        else if(rainbowEffect == RainbowEffect.Spread)
+                        else if (rainbowEffect == RainbowEffect.Spread)
                             color = RGBHelper.Wheel((pixelIndex * 256 / nusbioPixel.Count) + jWheelColorIndex);
 
-                        if(pixelIndex == 0) // Setting the pixel this way, will support more than 255 LED
+                        if (pixelIndex == 0) // Setting the pixel this way, will support more than 255 LED
                             nusbioPixel.SetPixel(pixelIndex, color); // Set led index to 0
                         else
                             nusbioPixel.SetPixel(color); // Set led to current position
@@ -341,14 +341,15 @@ namespace NusbioMatrixConsole
                     sw.Stop();
 
                     ConsoleEx.Write(0, 23, string.Format("SetPixel()/Show() {0}", nusbioPixel.GetByteSecondSentStatus(true)), ConsoleColor.Cyan);
-                    
+
                     if (speed > 0) Thread.Sleep(speed);
                     CheckKeyboard(ref quit, ref speed);
-                    if (quit)   
+                    if (quit)
                         break;
                 }
             }
         }
+
 
         static NusbioPixelDeviceType AskUserForPixelType()
         {
@@ -407,16 +408,16 @@ namespace NusbioMatrixConsole
         static void Main(string[] args)
         {
             var quit = false;
-
             if (args.Length > 0)
             {
                 var devType = GetArg(args, "-deviceType")[0];
                 _rgbLedType = GetMaxLed(devType);
             }
-            else {
+            else
+            {
                 _rgbLedType = AskUserForPixelType();
             }
-            var MAX_LED                 = (int)_rgbLedType;
+            var maxLED = (int)_rgbLedType;
             Console.Clear();
             ConsoleEx.TitleBar(0, GetAssemblyProduct());
             Console.WriteLine("");
@@ -425,7 +426,6 @@ namespace NusbioMatrixConsole
             if (nusbioPixel == null) return;
 
             Cls(nusbioPixel);
-            
 
             while (!quit)
             {
@@ -435,31 +435,30 @@ namespace NusbioMatrixConsole
                 {
                     k = Console.ReadKey(true).Key;
                 }
-                else {
+                else
+                {
                     var c = GetArg(args, "-command", 0);
                     if (c > 0)
                         k = (ConsoleKey)c;
                 }
-                if (k == ConsoleKey.Q) quit = true;
 
+                if (k == ConsoleKey.Q) quit = true;
                 if (k == ConsoleKey.D0) RainbowDemo(nusbioPixel, RainbowEffect.AllStrip, GetArg(args, "-speed", 1), GetArg(args, "-jWheelColorStep", 4), GetArg(args, "-brightness", 64));
                 if (k == ConsoleKey.D1) RainbowDemo(nusbioPixel, RainbowEffect.Spread, GetArg(args, "-speed", 1), GetArg(args, "-jWheelColorStep", 4), GetArg(args, "-brightness", 64));
-                if (k == ConsoleKey.S) SquareDemo(nusbioPixel);
+                if (k == ConsoleKey.S) Square4x4Demo(nusbioPixel);
+                if (k == ConsoleKey.D8) Square8x8Demo(nusbioPixel);
                 if (k == ConsoleKey.L) LineDemo(nusbioPixel);
-
                 if (k == ConsoleKey.I)
                 {
-                    nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, MAX_LED).Wait(500).SetStrip(Color.Green);
+                    nusbioPixel = NusbioPixel.ConnectToMCU(nusbioPixel, maxLED).Wait(500).SetStrip(Color.Green);
                 }
-                if(k != ConsoleKey.Escape)
+                if (k != ConsoleKey.Escape)
                 {
                     Cls(nusbioPixel);
                 }
-                
             }
             nusbioPixel.Dispose();
+            Console.Clear();
         }
     }
 }
-
-
